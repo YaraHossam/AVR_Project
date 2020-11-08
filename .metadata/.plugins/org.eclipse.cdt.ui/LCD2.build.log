@@ -1,0 +1,46 @@
+01:06:44 **** Incremental Build of configuration Debug for project LCD2 ****
+make all 
+Building file: ../main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+../main.c:7:1: warning: "F_CPU" redefined
+<command-line>: warning: this is the location of the previous definition
+In file included from ../main.c:12:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../main.c:12:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../main.c:16: warning: return type of 'main' is not 'int'
+Finished building: ../main.c
+ 
+Building target: LCD2.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,LCD2.map -mmcu=atmega32 -o "LCD2.elf"  ./DIO_Pro.o ./Keypad_Pro.o ./LCD_Pro.o ./main.o   
+Finished building target: LCD2.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S LCD2.elf  >"LCD2.lss"
+Finished building: LCD2.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex LCD2.elf  "LCD2.hex"
+Finished building: LCD2.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 LCD2.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:   11014 bytes (33.6% Full)
+(.text + .data + .bootloader)
+
+Data:         24 bytes (1.2% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+01:06:45 Build Finished (took 1s.205ms)
+

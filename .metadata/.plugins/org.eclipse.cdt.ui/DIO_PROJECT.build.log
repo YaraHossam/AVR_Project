@@ -1,0 +1,37 @@
+18:10:50 **** Incremental Build of configuration Debug for project DIO_PROJECT ****
+make all 
+Building target: DIO_PROJECT.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,DIO_PROJECT.map -mmcu=atmega32 -o "DIO_PROJECT.elf"  ./DIO_Pro.o ./main.o   
+Finished building target: DIO_PROJECT.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S DIO_PROJECT.elf  >"DIO_PROJECT.lss"
+Finished building: DIO_PROJECT.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex DIO_PROJECT.elf  "DIO_PROJECT.hex"
+Finished building: DIO_PROJECT.hex
+ 
+Create eeprom image (ihex format)
+avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex DIO_PROJECT.elf  "DIO_PROJECT.eep"
+Finished building: DIO_PROJECT.eep
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 DIO_PROJECT.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    3854 bytes (11.8% Full)
+(.text + .data + .bootloader)
+
+Data:          0 bytes (0.0% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+18:10:51 Build Finished (took 671ms)
+

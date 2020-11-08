@@ -1,0 +1,44 @@
+11:23:52 **** Incremental Build of configuration Debug for project seven_segment ****
+make all 
+Building file: ../main_seven_segment.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"main_seven_segment.d" -MT"main_seven_segment.o" -c -o "main_seven_segment.o" "../main_seven_segment.c"
+In file included from ../main_seven_segment.c:11:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../main_seven_segment.c:11:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../main_seven_segment.c:13: warning: return type of 'main' is not 'int'
+Finished building: ../main_seven_segment.c
+ 
+Building target: seven_segment.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,seven_segment.map -mmcu=atmega16 -o "seven_segment.elf"  ./DIO_Pro.o ./main_seven_segment.o ./seven_segment_Pro.o   
+Finished building target: seven_segment.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S seven_segment.elf  >"seven_segment.lss"
+Finished building: seven_segment.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex seven_segment.elf  "seven_segment.hex"
+Finished building: seven_segment.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 seven_segment.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:    3284 bytes (20.0% Full)
+(.text + .data + .bootloader)
+
+Data:          0 bytes (0.0% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+11:23:58 Build Finished (took 6s.324ms)
+

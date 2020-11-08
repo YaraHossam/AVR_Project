@@ -1,0 +1,51 @@
+20:14:15 **** Incremental Build of configuration Debug for project FreeRTOS_Semaphore ****
+make all 
+Building file: ../queue.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"queue.d" -MT"queue.o" -c -o "queue.o" "../queue.c"
+Finished building: ../queue.c
+ 
+Building file: ../tasks.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"tasks.d" -MT"tasks.o" -c -o "tasks.o" "../tasks.c"
+../tasks.c: In function 'xTaskGenericCreate':
+../tasks.c:470: warning: cast from pointer to integer of different size
+../tasks.c:470: warning: cast to pointer from integer of different size
+Finished building: ../tasks.c
+ 
+Building file: ../timers.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"timers.d" -MT"timers.o" -c -o "timers.o" "../timers.c"
+Finished building: ../timers.c
+ 
+Building target: FreeRTOS_Semaphore.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,FreeRTOS_Semaphore.map -mmcu=atmega16 -o "FreeRTOS_Semaphore.elf"  ./RTOS_test_EX3.o ./croutine.o ./heap_1.o ./list.o ./port.o ./queue.o ./tasks.o ./timers.o   
+Finished building target: FreeRTOS_Semaphore.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S FreeRTOS_Semaphore.elf  >"FreeRTOS_Semaphore.lss"
+Finished building: FreeRTOS_Semaphore.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex FreeRTOS_Semaphore.elf  "FreeRTOS_Semaphore.hex"
+Finished building: FreeRTOS_Semaphore.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 FreeRTOS_Semaphore.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:   11538 bytes (70.4% Full)
+(.text + .data + .bootloader)
+
+Data:        760 bytes (74.2% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+20:14:17 Build Finished (took 1s.423ms)
+

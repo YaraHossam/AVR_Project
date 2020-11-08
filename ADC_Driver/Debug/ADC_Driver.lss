@@ -1,0 +1,1772 @@
+
+ADC_Driver.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000b1e  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         00000b88  00000000  00000000  00000b74  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      0000046e  00000000  00000000  000016fc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   8:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+   c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  10:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  14:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  18:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  1c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  20:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  24:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  28:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  2c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  30:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  34:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  38:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  3c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  40:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  44:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  48:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  4c:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+  50:	0c 94 34 00 	jmp	0x68	; 0x68 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d4 e0       	ldi	r29, 0x04	; 4
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+  60:	0e 94 86 05 	call	0xb0c	; 0xb0c <main>
+  64:	0c 94 8d 05 	jmp	0xb1a	; 0xb1a <_exit>
+
+00000068 <__bad_interrupt>:
+  68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000006c <ADC_vInitialization>:
+#include "../_standard/calcbit.h"
+#include "ADC_Register.h"
+#include "ADC_interface.h"
+
+void ADC_vInitialization(ADC_tstrADC * Copy_PtrInput)
+{
+  6c:	df 93       	push	r29
+  6e:	cf 93       	push	r28
+  70:	00 d0       	rcall	.+0      	; 0x72 <ADC_vInitialization+0x6>
+  72:	cd b7       	in	r28, 0x3d	; 61
+  74:	de b7       	in	r29, 0x3e	; 62
+  76:	9a 83       	std	Y+2, r25	; 0x02
+  78:	89 83       	std	Y+1, r24	; 0x01
+	/****************** Vref CONFIGURATION ********************/
+	if( (Copy_PtrInput->ADC_Vref) == ADC_VrefVcc)                 /* check if the user wanted AVCC with external capacitor at AREF pin */
+  7a:	e9 81       	ldd	r30, Y+1	; 0x01
+  7c:	fa 81       	ldd	r31, Y+2	; 0x02
+  7e:	81 81       	ldd	r24, Z+1	; 0x01
+  80:	88 71       	andi	r24, 0x18	; 24
+  82:	88 30       	cpi	r24, 0x08	; 8
+  84:	79 f4       	brne	.+30     	; 0xa4 <ADC_vInitialization+0x38>
+	{
+		clearbit(ADMUX,REFS1);
+  86:	a7 e2       	ldi	r26, 0x27	; 39
+  88:	b0 e0       	ldi	r27, 0x00	; 0
+  8a:	e7 e2       	ldi	r30, 0x27	; 39
+  8c:	f0 e0       	ldi	r31, 0x00	; 0
+  8e:	80 81       	ld	r24, Z
+  90:	8f 77       	andi	r24, 0x7F	; 127
+  92:	8c 93       	st	X, r24
+		setbit(ADMUX,REFS0);
+  94:	a7 e2       	ldi	r26, 0x27	; 39
+  96:	b0 e0       	ldi	r27, 0x00	; 0
+  98:	e7 e2       	ldi	r30, 0x27	; 39
+  9a:	f0 e0       	ldi	r31, 0x00	; 0
+  9c:	80 81       	ld	r24, Z
+  9e:	80 64       	ori	r24, 0x40	; 64
+  a0:	8c 93       	st	X, r24
+  a2:	3e c0       	rjmp	.+124    	; 0x120 <ADC_vInitialization+0xb4>
+	}
+	else if ((Copy_PtrInput->ADC_Vref) == ADC_VrefAref)           /* check if the user wanted AREF, Internal Vref turned off */
+  a4:	e9 81       	ldd	r30, Y+1	; 0x01
+  a6:	fa 81       	ldd	r31, Y+2	; 0x02
+  a8:	81 81       	ldd	r24, Z+1	; 0x01
+  aa:	88 71       	andi	r24, 0x18	; 24
+  ac:	88 23       	and	r24, r24
+  ae:	79 f4       	brne	.+30     	; 0xce <ADC_vInitialization+0x62>
+	{
+		clearbit(ADMUX,REFS1);
+  b0:	a7 e2       	ldi	r26, 0x27	; 39
+  b2:	b0 e0       	ldi	r27, 0x00	; 0
+  b4:	e7 e2       	ldi	r30, 0x27	; 39
+  b6:	f0 e0       	ldi	r31, 0x00	; 0
+  b8:	80 81       	ld	r24, Z
+  ba:	8f 77       	andi	r24, 0x7F	; 127
+  bc:	8c 93       	st	X, r24
+		clearbit(ADMUX,REFS0);
+  be:	a7 e2       	ldi	r26, 0x27	; 39
+  c0:	b0 e0       	ldi	r27, 0x00	; 0
+  c2:	e7 e2       	ldi	r30, 0x27	; 39
+  c4:	f0 e0       	ldi	r31, 0x00	; 0
+  c6:	80 81       	ld	r24, Z
+  c8:	8f 7b       	andi	r24, 0xBF	; 191
+  ca:	8c 93       	st	X, r24
+  cc:	29 c0       	rjmp	.+82     	; 0x120 <ADC_vInitialization+0xb4>
+	}
+	else if ((Copy_PtrInput->ADC_Vref) == ADC_VrefReserved)        /* check if the user wanted it reserved */
+  ce:	e9 81       	ldd	r30, Y+1	; 0x01
+  d0:	fa 81       	ldd	r31, Y+2	; 0x02
+  d2:	81 81       	ldd	r24, Z+1	; 0x01
+  d4:	88 71       	andi	r24, 0x18	; 24
+  d6:	80 31       	cpi	r24, 0x10	; 16
+  d8:	79 f4       	brne	.+30     	; 0xf8 <ADC_vInitialization+0x8c>
+	{
+		setbit(ADMUX,REFS1);
+  da:	a7 e2       	ldi	r26, 0x27	; 39
+  dc:	b0 e0       	ldi	r27, 0x00	; 0
+  de:	e7 e2       	ldi	r30, 0x27	; 39
+  e0:	f0 e0       	ldi	r31, 0x00	; 0
+  e2:	80 81       	ld	r24, Z
+  e4:	80 68       	ori	r24, 0x80	; 128
+  e6:	8c 93       	st	X, r24
+		clearbit(ADMUX,REFS0);
+  e8:	a7 e2       	ldi	r26, 0x27	; 39
+  ea:	b0 e0       	ldi	r27, 0x00	; 0
+  ec:	e7 e2       	ldi	r30, 0x27	; 39
+  ee:	f0 e0       	ldi	r31, 0x00	; 0
+  f0:	80 81       	ld	r24, Z
+  f2:	8f 7b       	andi	r24, 0xBF	; 191
+  f4:	8c 93       	st	X, r24
+  f6:	14 c0       	rjmp	.+40     	; 0x120 <ADC_vInitialization+0xb4>
+	}
+	else if ((Copy_PtrInput->ADC_Vref) == ADC_VrefInternal)        /* check if the user wanted Internal 2.56V Voltage Reference with external capacitor at AREF pin*/
+  f8:	e9 81       	ldd	r30, Y+1	; 0x01
+  fa:	fa 81       	ldd	r31, Y+2	; 0x02
+  fc:	81 81       	ldd	r24, Z+1	; 0x01
+  fe:	88 71       	andi	r24, 0x18	; 24
+ 100:	88 31       	cpi	r24, 0x18	; 24
+ 102:	71 f4       	brne	.+28     	; 0x120 <ADC_vInitialization+0xb4>
+	{
+		setbit(ADMUX,REFS1);
+ 104:	a7 e2       	ldi	r26, 0x27	; 39
+ 106:	b0 e0       	ldi	r27, 0x00	; 0
+ 108:	e7 e2       	ldi	r30, 0x27	; 39
+ 10a:	f0 e0       	ldi	r31, 0x00	; 0
+ 10c:	80 81       	ld	r24, Z
+ 10e:	80 68       	ori	r24, 0x80	; 128
+ 110:	8c 93       	st	X, r24
+		setbit(ADMUX,REFS0);
+ 112:	a7 e2       	ldi	r26, 0x27	; 39
+ 114:	b0 e0       	ldi	r27, 0x00	; 0
+ 116:	e7 e2       	ldi	r30, 0x27	; 39
+ 118:	f0 e0       	ldi	r31, 0x00	; 0
+ 11a:	80 81       	ld	r24, Z
+ 11c:	80 64       	ori	r24, 0x40	; 64
+ 11e:	8c 93       	st	X, r24
+	{
+		/* DO NTH */
+	}
+
+	/************** CHANNEL AND GAIN CONFIG. ***********************/
+	if( (Copy_PtrInput->ADC_Channel_Gain) == ADC_Channel0SE)      /* check if the user choosed channel 0 */
+ 120:	e9 81       	ldd	r30, Y+1	; 0x01
+ 122:	fa 81       	ldd	r31, Y+2	; 0x02
+ 124:	80 81       	ld	r24, Z
+ 126:	8f 71       	andi	r24, 0x1F	; 31
+ 128:	88 23       	and	r24, r24
+ 12a:	21 f5       	brne	.+72     	; 0x174 <ADC_vInitialization+0x108>
+	{
+		clearbit(ADMUX,MUX0);
+ 12c:	a7 e2       	ldi	r26, 0x27	; 39
+ 12e:	b0 e0       	ldi	r27, 0x00	; 0
+ 130:	e7 e2       	ldi	r30, 0x27	; 39
+ 132:	f0 e0       	ldi	r31, 0x00	; 0
+ 134:	80 81       	ld	r24, Z
+ 136:	8e 7f       	andi	r24, 0xFE	; 254
+ 138:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX1);
+ 13a:	a7 e2       	ldi	r26, 0x27	; 39
+ 13c:	b0 e0       	ldi	r27, 0x00	; 0
+ 13e:	e7 e2       	ldi	r30, 0x27	; 39
+ 140:	f0 e0       	ldi	r31, 0x00	; 0
+ 142:	80 81       	ld	r24, Z
+ 144:	8d 7f       	andi	r24, 0xFD	; 253
+ 146:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX2);
+ 148:	a7 e2       	ldi	r26, 0x27	; 39
+ 14a:	b0 e0       	ldi	r27, 0x00	; 0
+ 14c:	e7 e2       	ldi	r30, 0x27	; 39
+ 14e:	f0 e0       	ldi	r31, 0x00	; 0
+ 150:	80 81       	ld	r24, Z
+ 152:	8b 7f       	andi	r24, 0xFB	; 251
+ 154:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 156:	a7 e2       	ldi	r26, 0x27	; 39
+ 158:	b0 e0       	ldi	r27, 0x00	; 0
+ 15a:	e7 e2       	ldi	r30, 0x27	; 39
+ 15c:	f0 e0       	ldi	r31, 0x00	; 0
+ 15e:	80 81       	ld	r24, Z
+ 160:	87 7f       	andi	r24, 0xF7	; 247
+ 162:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 164:	a7 e2       	ldi	r26, 0x27	; 39
+ 166:	b0 e0       	ldi	r27, 0x00	; 0
+ 168:	e7 e2       	ldi	r30, 0x27	; 39
+ 16a:	f0 e0       	ldi	r31, 0x00	; 0
+ 16c:	80 81       	ld	r24, Z
+ 16e:	8f 7e       	andi	r24, 0xEF	; 239
+ 170:	8c 93       	st	X, r24
+ 172:	25 c1       	rjmp	.+586    	; 0x3be <ADC_vInitialization+0x352>
+	}
+	else if( (Copy_PtrInput->ADC_Channel_Gain) == ADC_Channel1SE) /* check if the user choosed channel 1 */
+ 174:	e9 81       	ldd	r30, Y+1	; 0x01
+ 176:	fa 81       	ldd	r31, Y+2	; 0x02
+ 178:	80 81       	ld	r24, Z
+ 17a:	8f 71       	andi	r24, 0x1F	; 31
+ 17c:	81 30       	cpi	r24, 0x01	; 1
+ 17e:	21 f5       	brne	.+72     	; 0x1c8 <ADC_vInitialization+0x15c>
+	{
+		setbit(ADMUX,MUX0);
+ 180:	a7 e2       	ldi	r26, 0x27	; 39
+ 182:	b0 e0       	ldi	r27, 0x00	; 0
+ 184:	e7 e2       	ldi	r30, 0x27	; 39
+ 186:	f0 e0       	ldi	r31, 0x00	; 0
+ 188:	80 81       	ld	r24, Z
+ 18a:	81 60       	ori	r24, 0x01	; 1
+ 18c:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX1);
+ 18e:	a7 e2       	ldi	r26, 0x27	; 39
+ 190:	b0 e0       	ldi	r27, 0x00	; 0
+ 192:	e7 e2       	ldi	r30, 0x27	; 39
+ 194:	f0 e0       	ldi	r31, 0x00	; 0
+ 196:	80 81       	ld	r24, Z
+ 198:	8d 7f       	andi	r24, 0xFD	; 253
+ 19a:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX2);
+ 19c:	a7 e2       	ldi	r26, 0x27	; 39
+ 19e:	b0 e0       	ldi	r27, 0x00	; 0
+ 1a0:	e7 e2       	ldi	r30, 0x27	; 39
+ 1a2:	f0 e0       	ldi	r31, 0x00	; 0
+ 1a4:	80 81       	ld	r24, Z
+ 1a6:	8b 7f       	andi	r24, 0xFB	; 251
+ 1a8:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 1aa:	a7 e2       	ldi	r26, 0x27	; 39
+ 1ac:	b0 e0       	ldi	r27, 0x00	; 0
+ 1ae:	e7 e2       	ldi	r30, 0x27	; 39
+ 1b0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1b2:	80 81       	ld	r24, Z
+ 1b4:	87 7f       	andi	r24, 0xF7	; 247
+ 1b6:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 1b8:	a7 e2       	ldi	r26, 0x27	; 39
+ 1ba:	b0 e0       	ldi	r27, 0x00	; 0
+ 1bc:	e7 e2       	ldi	r30, 0x27	; 39
+ 1be:	f0 e0       	ldi	r31, 0x00	; 0
+ 1c0:	80 81       	ld	r24, Z
+ 1c2:	8f 7e       	andi	r24, 0xEF	; 239
+ 1c4:	8c 93       	st	X, r24
+ 1c6:	fb c0       	rjmp	.+502    	; 0x3be <ADC_vInitialization+0x352>
+	}
+	else if( (Copy_PtrInput->ADC_Channel_Gain) == ADC_Channel2SE) /* check if the user choosed channel 2 */
+ 1c8:	e9 81       	ldd	r30, Y+1	; 0x01
+ 1ca:	fa 81       	ldd	r31, Y+2	; 0x02
+ 1cc:	80 81       	ld	r24, Z
+ 1ce:	8f 71       	andi	r24, 0x1F	; 31
+ 1d0:	82 30       	cpi	r24, 0x02	; 2
+ 1d2:	21 f5       	brne	.+72     	; 0x21c <ADC_vInitialization+0x1b0>
+	{
+		clearbit(ADMUX,MUX0);
+ 1d4:	a7 e2       	ldi	r26, 0x27	; 39
+ 1d6:	b0 e0       	ldi	r27, 0x00	; 0
+ 1d8:	e7 e2       	ldi	r30, 0x27	; 39
+ 1da:	f0 e0       	ldi	r31, 0x00	; 0
+ 1dc:	80 81       	ld	r24, Z
+ 1de:	8e 7f       	andi	r24, 0xFE	; 254
+ 1e0:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX1);
+ 1e2:	a7 e2       	ldi	r26, 0x27	; 39
+ 1e4:	b0 e0       	ldi	r27, 0x00	; 0
+ 1e6:	e7 e2       	ldi	r30, 0x27	; 39
+ 1e8:	f0 e0       	ldi	r31, 0x00	; 0
+ 1ea:	80 81       	ld	r24, Z
+ 1ec:	82 60       	ori	r24, 0x02	; 2
+ 1ee:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX2);
+ 1f0:	a7 e2       	ldi	r26, 0x27	; 39
+ 1f2:	b0 e0       	ldi	r27, 0x00	; 0
+ 1f4:	e7 e2       	ldi	r30, 0x27	; 39
+ 1f6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1f8:	80 81       	ld	r24, Z
+ 1fa:	8b 7f       	andi	r24, 0xFB	; 251
+ 1fc:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 1fe:	a7 e2       	ldi	r26, 0x27	; 39
+ 200:	b0 e0       	ldi	r27, 0x00	; 0
+ 202:	e7 e2       	ldi	r30, 0x27	; 39
+ 204:	f0 e0       	ldi	r31, 0x00	; 0
+ 206:	80 81       	ld	r24, Z
+ 208:	87 7f       	andi	r24, 0xF7	; 247
+ 20a:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 20c:	a7 e2       	ldi	r26, 0x27	; 39
+ 20e:	b0 e0       	ldi	r27, 0x00	; 0
+ 210:	e7 e2       	ldi	r30, 0x27	; 39
+ 212:	f0 e0       	ldi	r31, 0x00	; 0
+ 214:	80 81       	ld	r24, Z
+ 216:	8f 7e       	andi	r24, 0xEF	; 239
+ 218:	8c 93       	st	X, r24
+ 21a:	d1 c0       	rjmp	.+418    	; 0x3be <ADC_vInitialization+0x352>
+	}
+	else if( (Copy_PtrInput->ADC_Channel_Gain) == ADC_Channel3SE) /* check if the user choosed channel 3 */
+ 21c:	e9 81       	ldd	r30, Y+1	; 0x01
+ 21e:	fa 81       	ldd	r31, Y+2	; 0x02
+ 220:	80 81       	ld	r24, Z
+ 222:	8f 71       	andi	r24, 0x1F	; 31
+ 224:	83 30       	cpi	r24, 0x03	; 3
+ 226:	21 f5       	brne	.+72     	; 0x270 <ADC_vInitialization+0x204>
+	{
+		setbit(ADMUX,MUX0);
+ 228:	a7 e2       	ldi	r26, 0x27	; 39
+ 22a:	b0 e0       	ldi	r27, 0x00	; 0
+ 22c:	e7 e2       	ldi	r30, 0x27	; 39
+ 22e:	f0 e0       	ldi	r31, 0x00	; 0
+ 230:	80 81       	ld	r24, Z
+ 232:	81 60       	ori	r24, 0x01	; 1
+ 234:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX1);
+ 236:	a7 e2       	ldi	r26, 0x27	; 39
+ 238:	b0 e0       	ldi	r27, 0x00	; 0
+ 23a:	e7 e2       	ldi	r30, 0x27	; 39
+ 23c:	f0 e0       	ldi	r31, 0x00	; 0
+ 23e:	80 81       	ld	r24, Z
+ 240:	82 60       	ori	r24, 0x02	; 2
+ 242:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX2);
+ 244:	a7 e2       	ldi	r26, 0x27	; 39
+ 246:	b0 e0       	ldi	r27, 0x00	; 0
+ 248:	e7 e2       	ldi	r30, 0x27	; 39
+ 24a:	f0 e0       	ldi	r31, 0x00	; 0
+ 24c:	80 81       	ld	r24, Z
+ 24e:	8b 7f       	andi	r24, 0xFB	; 251
+ 250:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 252:	a7 e2       	ldi	r26, 0x27	; 39
+ 254:	b0 e0       	ldi	r27, 0x00	; 0
+ 256:	e7 e2       	ldi	r30, 0x27	; 39
+ 258:	f0 e0       	ldi	r31, 0x00	; 0
+ 25a:	80 81       	ld	r24, Z
+ 25c:	87 7f       	andi	r24, 0xF7	; 247
+ 25e:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 260:	a7 e2       	ldi	r26, 0x27	; 39
+ 262:	b0 e0       	ldi	r27, 0x00	; 0
+ 264:	e7 e2       	ldi	r30, 0x27	; 39
+ 266:	f0 e0       	ldi	r31, 0x00	; 0
+ 268:	80 81       	ld	r24, Z
+ 26a:	8f 7e       	andi	r24, 0xEF	; 239
+ 26c:	8c 93       	st	X, r24
+ 26e:	a7 c0       	rjmp	.+334    	; 0x3be <ADC_vInitialization+0x352>
+	}
+	else if( (Copy_PtrInput->ADC_Channel_Gain) == ADC_Channel4SE) /* check if the user choosed channel 4 */
+ 270:	e9 81       	ldd	r30, Y+1	; 0x01
+ 272:	fa 81       	ldd	r31, Y+2	; 0x02
+ 274:	80 81       	ld	r24, Z
+ 276:	8f 71       	andi	r24, 0x1F	; 31
+ 278:	84 30       	cpi	r24, 0x04	; 4
+ 27a:	21 f5       	brne	.+72     	; 0x2c4 <ADC_vInitialization+0x258>
+	{
+		clearbit(ADMUX,MUX0);
+ 27c:	a7 e2       	ldi	r26, 0x27	; 39
+ 27e:	b0 e0       	ldi	r27, 0x00	; 0
+ 280:	e7 e2       	ldi	r30, 0x27	; 39
+ 282:	f0 e0       	ldi	r31, 0x00	; 0
+ 284:	80 81       	ld	r24, Z
+ 286:	8e 7f       	andi	r24, 0xFE	; 254
+ 288:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX1);
+ 28a:	a7 e2       	ldi	r26, 0x27	; 39
+ 28c:	b0 e0       	ldi	r27, 0x00	; 0
+ 28e:	e7 e2       	ldi	r30, 0x27	; 39
+ 290:	f0 e0       	ldi	r31, 0x00	; 0
+ 292:	80 81       	ld	r24, Z
+ 294:	8d 7f       	andi	r24, 0xFD	; 253
+ 296:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX2);
+ 298:	a7 e2       	ldi	r26, 0x27	; 39
+ 29a:	b0 e0       	ldi	r27, 0x00	; 0
+ 29c:	e7 e2       	ldi	r30, 0x27	; 39
+ 29e:	f0 e0       	ldi	r31, 0x00	; 0
+ 2a0:	80 81       	ld	r24, Z
+ 2a2:	84 60       	ori	r24, 0x04	; 4
+ 2a4:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 2a6:	a7 e2       	ldi	r26, 0x27	; 39
+ 2a8:	b0 e0       	ldi	r27, 0x00	; 0
+ 2aa:	e7 e2       	ldi	r30, 0x27	; 39
+ 2ac:	f0 e0       	ldi	r31, 0x00	; 0
+ 2ae:	80 81       	ld	r24, Z
+ 2b0:	87 7f       	andi	r24, 0xF7	; 247
+ 2b2:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 2b4:	a7 e2       	ldi	r26, 0x27	; 39
+ 2b6:	b0 e0       	ldi	r27, 0x00	; 0
+ 2b8:	e7 e2       	ldi	r30, 0x27	; 39
+ 2ba:	f0 e0       	ldi	r31, 0x00	; 0
+ 2bc:	80 81       	ld	r24, Z
+ 2be:	8f 7e       	andi	r24, 0xEF	; 239
+ 2c0:	8c 93       	st	X, r24
+ 2c2:	7d c0       	rjmp	.+250    	; 0x3be <ADC_vInitialization+0x352>
+	}
+	else if( (Copy_PtrInput->ADC_Channel_Gain) == ADC_Channel5SE) /* check if the user choosed channel 5 */
+ 2c4:	e9 81       	ldd	r30, Y+1	; 0x01
+ 2c6:	fa 81       	ldd	r31, Y+2	; 0x02
+ 2c8:	80 81       	ld	r24, Z
+ 2ca:	8f 71       	andi	r24, 0x1F	; 31
+ 2cc:	85 30       	cpi	r24, 0x05	; 5
+ 2ce:	21 f5       	brne	.+72     	; 0x318 <ADC_vInitialization+0x2ac>
+	{
+		setbit(ADMUX,MUX0);
+ 2d0:	a7 e2       	ldi	r26, 0x27	; 39
+ 2d2:	b0 e0       	ldi	r27, 0x00	; 0
+ 2d4:	e7 e2       	ldi	r30, 0x27	; 39
+ 2d6:	f0 e0       	ldi	r31, 0x00	; 0
+ 2d8:	80 81       	ld	r24, Z
+ 2da:	81 60       	ori	r24, 0x01	; 1
+ 2dc:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX1);
+ 2de:	a7 e2       	ldi	r26, 0x27	; 39
+ 2e0:	b0 e0       	ldi	r27, 0x00	; 0
+ 2e2:	e7 e2       	ldi	r30, 0x27	; 39
+ 2e4:	f0 e0       	ldi	r31, 0x00	; 0
+ 2e6:	80 81       	ld	r24, Z
+ 2e8:	8d 7f       	andi	r24, 0xFD	; 253
+ 2ea:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX2);
+ 2ec:	a7 e2       	ldi	r26, 0x27	; 39
+ 2ee:	b0 e0       	ldi	r27, 0x00	; 0
+ 2f0:	e7 e2       	ldi	r30, 0x27	; 39
+ 2f2:	f0 e0       	ldi	r31, 0x00	; 0
+ 2f4:	80 81       	ld	r24, Z
+ 2f6:	84 60       	ori	r24, 0x04	; 4
+ 2f8:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 2fa:	a7 e2       	ldi	r26, 0x27	; 39
+ 2fc:	b0 e0       	ldi	r27, 0x00	; 0
+ 2fe:	e7 e2       	ldi	r30, 0x27	; 39
+ 300:	f0 e0       	ldi	r31, 0x00	; 0
+ 302:	80 81       	ld	r24, Z
+ 304:	87 7f       	andi	r24, 0xF7	; 247
+ 306:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 308:	a7 e2       	ldi	r26, 0x27	; 39
+ 30a:	b0 e0       	ldi	r27, 0x00	; 0
+ 30c:	e7 e2       	ldi	r30, 0x27	; 39
+ 30e:	f0 e0       	ldi	r31, 0x00	; 0
+ 310:	80 81       	ld	r24, Z
+ 312:	8f 7e       	andi	r24, 0xEF	; 239
+ 314:	8c 93       	st	X, r24
+ 316:	53 c0       	rjmp	.+166    	; 0x3be <ADC_vInitialization+0x352>
+	}
+	else if( (Copy_PtrInput->ADC_Channel_Gain) == ADC_Channel6SE) /* check if the user choosed channel 6 */
+ 318:	e9 81       	ldd	r30, Y+1	; 0x01
+ 31a:	fa 81       	ldd	r31, Y+2	; 0x02
+ 31c:	80 81       	ld	r24, Z
+ 31e:	8f 71       	andi	r24, 0x1F	; 31
+ 320:	86 30       	cpi	r24, 0x06	; 6
+ 322:	21 f5       	brne	.+72     	; 0x36c <ADC_vInitialization+0x300>
+	{
+		clearbit(ADMUX,MUX0);
+ 324:	a7 e2       	ldi	r26, 0x27	; 39
+ 326:	b0 e0       	ldi	r27, 0x00	; 0
+ 328:	e7 e2       	ldi	r30, 0x27	; 39
+ 32a:	f0 e0       	ldi	r31, 0x00	; 0
+ 32c:	80 81       	ld	r24, Z
+ 32e:	8e 7f       	andi	r24, 0xFE	; 254
+ 330:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX1);
+ 332:	a7 e2       	ldi	r26, 0x27	; 39
+ 334:	b0 e0       	ldi	r27, 0x00	; 0
+ 336:	e7 e2       	ldi	r30, 0x27	; 39
+ 338:	f0 e0       	ldi	r31, 0x00	; 0
+ 33a:	80 81       	ld	r24, Z
+ 33c:	82 60       	ori	r24, 0x02	; 2
+ 33e:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX2);
+ 340:	a7 e2       	ldi	r26, 0x27	; 39
+ 342:	b0 e0       	ldi	r27, 0x00	; 0
+ 344:	e7 e2       	ldi	r30, 0x27	; 39
+ 346:	f0 e0       	ldi	r31, 0x00	; 0
+ 348:	80 81       	ld	r24, Z
+ 34a:	84 60       	ori	r24, 0x04	; 4
+ 34c:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 34e:	a7 e2       	ldi	r26, 0x27	; 39
+ 350:	b0 e0       	ldi	r27, 0x00	; 0
+ 352:	e7 e2       	ldi	r30, 0x27	; 39
+ 354:	f0 e0       	ldi	r31, 0x00	; 0
+ 356:	80 81       	ld	r24, Z
+ 358:	87 7f       	andi	r24, 0xF7	; 247
+ 35a:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 35c:	a7 e2       	ldi	r26, 0x27	; 39
+ 35e:	b0 e0       	ldi	r27, 0x00	; 0
+ 360:	e7 e2       	ldi	r30, 0x27	; 39
+ 362:	f0 e0       	ldi	r31, 0x00	; 0
+ 364:	80 81       	ld	r24, Z
+ 366:	8f 7e       	andi	r24, 0xEF	; 239
+ 368:	8c 93       	st	X, r24
+ 36a:	29 c0       	rjmp	.+82     	; 0x3be <ADC_vInitialization+0x352>
+	}
+	else if( (Copy_PtrInput->ADC_Channel_Gain) == ADC_Channel7SE) /* check if the user choosed channel 7 */
+ 36c:	e9 81       	ldd	r30, Y+1	; 0x01
+ 36e:	fa 81       	ldd	r31, Y+2	; 0x02
+ 370:	80 81       	ld	r24, Z
+ 372:	8f 71       	andi	r24, 0x1F	; 31
+ 374:	87 30       	cpi	r24, 0x07	; 7
+ 376:	19 f5       	brne	.+70     	; 0x3be <ADC_vInitialization+0x352>
+	{
+		setbit(ADMUX,MUX0);
+ 378:	a7 e2       	ldi	r26, 0x27	; 39
+ 37a:	b0 e0       	ldi	r27, 0x00	; 0
+ 37c:	e7 e2       	ldi	r30, 0x27	; 39
+ 37e:	f0 e0       	ldi	r31, 0x00	; 0
+ 380:	80 81       	ld	r24, Z
+ 382:	81 60       	ori	r24, 0x01	; 1
+ 384:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX1);
+ 386:	a7 e2       	ldi	r26, 0x27	; 39
+ 388:	b0 e0       	ldi	r27, 0x00	; 0
+ 38a:	e7 e2       	ldi	r30, 0x27	; 39
+ 38c:	f0 e0       	ldi	r31, 0x00	; 0
+ 38e:	80 81       	ld	r24, Z
+ 390:	82 60       	ori	r24, 0x02	; 2
+ 392:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX2);
+ 394:	a7 e2       	ldi	r26, 0x27	; 39
+ 396:	b0 e0       	ldi	r27, 0x00	; 0
+ 398:	e7 e2       	ldi	r30, 0x27	; 39
+ 39a:	f0 e0       	ldi	r31, 0x00	; 0
+ 39c:	80 81       	ld	r24, Z
+ 39e:	84 60       	ori	r24, 0x04	; 4
+ 3a0:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 3a2:	a7 e2       	ldi	r26, 0x27	; 39
+ 3a4:	b0 e0       	ldi	r27, 0x00	; 0
+ 3a6:	e7 e2       	ldi	r30, 0x27	; 39
+ 3a8:	f0 e0       	ldi	r31, 0x00	; 0
+ 3aa:	80 81       	ld	r24, Z
+ 3ac:	87 7f       	andi	r24, 0xF7	; 247
+ 3ae:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 3b0:	a7 e2       	ldi	r26, 0x27	; 39
+ 3b2:	b0 e0       	ldi	r27, 0x00	; 0
+ 3b4:	e7 e2       	ldi	r30, 0x27	; 39
+ 3b6:	f0 e0       	ldi	r31, 0x00	; 0
+ 3b8:	80 81       	ld	r24, Z
+ 3ba:	8f 7e       	andi	r24, 0xEF	; 239
+ 3bc:	8c 93       	st	X, r24
+	{
+		/*  do NTH */
+	}
+
+	/************* DATA ADJUSTMENT *****************/
+	if((Copy_PtrInput->ADC_DataAdj) == ADC_Ladj)         /* check if the user choosed Left-ADJUSTMENT */
+ 3be:	e9 81       	ldd	r30, Y+1	; 0x01
+ 3c0:	fa 81       	ldd	r31, Y+2	; 0x02
+ 3c2:	81 81       	ldd	r24, Z+1	; 0x01
+ 3c4:	80 72       	andi	r24, 0x20	; 32
+ 3c6:	88 23       	and	r24, r24
+ 3c8:	41 f0       	breq	.+16     	; 0x3da <ADC_vInitialization+0x36e>
+	{
+		setbit(ADMUX,ADLAR);
+ 3ca:	a7 e2       	ldi	r26, 0x27	; 39
+ 3cc:	b0 e0       	ldi	r27, 0x00	; 0
+ 3ce:	e7 e2       	ldi	r30, 0x27	; 39
+ 3d0:	f0 e0       	ldi	r31, 0x00	; 0
+ 3d2:	80 81       	ld	r24, Z
+ 3d4:	80 62       	ori	r24, 0x20	; 32
+ 3d6:	8c 93       	st	X, r24
+ 3d8:	0d c0       	rjmp	.+26     	; 0x3f4 <ADC_vInitialization+0x388>
+	}
+	else if((Copy_PtrInput->ADC_DataAdj) == ADC_Radj)   /* check if the user choosed Right-ADJUSTMENT */
+ 3da:	e9 81       	ldd	r30, Y+1	; 0x01
+ 3dc:	fa 81       	ldd	r31, Y+2	; 0x02
+ 3de:	81 81       	ldd	r24, Z+1	; 0x01
+ 3e0:	80 72       	andi	r24, 0x20	; 32
+ 3e2:	88 23       	and	r24, r24
+ 3e4:	39 f4       	brne	.+14     	; 0x3f4 <ADC_vInitialization+0x388>
+	{
+		clearbit(ADMUX,ADLAR);
+ 3e6:	a7 e2       	ldi	r26, 0x27	; 39
+ 3e8:	b0 e0       	ldi	r27, 0x00	; 0
+ 3ea:	e7 e2       	ldi	r30, 0x27	; 39
+ 3ec:	f0 e0       	ldi	r31, 0x00	; 0
+ 3ee:	80 81       	ld	r24, Z
+ 3f0:	8f 7d       	andi	r24, 0xDF	; 223
+ 3f2:	8c 93       	st	X, r24
+	{
+		/* DO NTH */
+	}
+
+	/********** PRESCALAR **************/
+	if((Copy_PtrInput->ADC_Prescalar) == ADC_PrescalarTwo)                           /*check if the user entered prescalar /2 */
+ 3f4:	e9 81       	ldd	r30, Y+1	; 0x01
+ 3f6:	fa 81       	ldd	r31, Y+2	; 0x02
+ 3f8:	80 81       	ld	r24, Z
+ 3fa:	80 7e       	andi	r24, 0xE0	; 224
+ 3fc:	88 23       	and	r24, r24
+ 3fe:	b1 f4       	brne	.+44     	; 0x42c <ADC_vInitialization+0x3c0>
+	{
+		clearbit(ADCSRA,ADPS0);
+ 400:	a6 e2       	ldi	r26, 0x26	; 38
+ 402:	b0 e0       	ldi	r27, 0x00	; 0
+ 404:	e6 e2       	ldi	r30, 0x26	; 38
+ 406:	f0 e0       	ldi	r31, 0x00	; 0
+ 408:	80 81       	ld	r24, Z
+ 40a:	8e 7f       	andi	r24, 0xFE	; 254
+ 40c:	8c 93       	st	X, r24
+		clearbit(ADCSRA,ADPS1);
+ 40e:	a6 e2       	ldi	r26, 0x26	; 38
+ 410:	b0 e0       	ldi	r27, 0x00	; 0
+ 412:	e6 e2       	ldi	r30, 0x26	; 38
+ 414:	f0 e0       	ldi	r31, 0x00	; 0
+ 416:	80 81       	ld	r24, Z
+ 418:	8d 7f       	andi	r24, 0xFD	; 253
+ 41a:	8c 93       	st	X, r24
+		clearbit(ADCSRA,ADPS2);
+ 41c:	a6 e2       	ldi	r26, 0x26	; 38
+ 41e:	b0 e0       	ldi	r27, 0x00	; 0
+ 420:	e6 e2       	ldi	r30, 0x26	; 38
+ 422:	f0 e0       	ldi	r31, 0x00	; 0
+ 424:	80 81       	ld	r24, Z
+ 426:	8b 7f       	andi	r24, 0xFB	; 251
+ 428:	8c 93       	st	X, r24
+ 42a:	a7 c0       	rjmp	.+334    	; 0x57a <__stack+0x11b>
+	}
+	else if((Copy_PtrInput->ADC_Prescalar) == ADC_PrescalarFour)                    /* check if the user entered prescalar /4 */
+ 42c:	e9 81       	ldd	r30, Y+1	; 0x01
+ 42e:	fa 81       	ldd	r31, Y+2	; 0x02
+ 430:	80 81       	ld	r24, Z
+ 432:	80 7e       	andi	r24, 0xE0	; 224
+ 434:	80 34       	cpi	r24, 0x40	; 64
+ 436:	b1 f4       	brne	.+44     	; 0x464 <__stack+0x5>
+	{
+		clearbit(ADCSRA,ADPS0);
+ 438:	a6 e2       	ldi	r26, 0x26	; 38
+ 43a:	b0 e0       	ldi	r27, 0x00	; 0
+ 43c:	e6 e2       	ldi	r30, 0x26	; 38
+ 43e:	f0 e0       	ldi	r31, 0x00	; 0
+ 440:	80 81       	ld	r24, Z
+ 442:	8e 7f       	andi	r24, 0xFE	; 254
+ 444:	8c 93       	st	X, r24
+		setbit(ADCSRA,ADPS1);
+ 446:	a6 e2       	ldi	r26, 0x26	; 38
+ 448:	b0 e0       	ldi	r27, 0x00	; 0
+ 44a:	e6 e2       	ldi	r30, 0x26	; 38
+ 44c:	f0 e0       	ldi	r31, 0x00	; 0
+ 44e:	80 81       	ld	r24, Z
+ 450:	82 60       	ori	r24, 0x02	; 2
+ 452:	8c 93       	st	X, r24
+		clearbit(ADCSRA,ADPS2);
+ 454:	a6 e2       	ldi	r26, 0x26	; 38
+ 456:	b0 e0       	ldi	r27, 0x00	; 0
+ 458:	e6 e2       	ldi	r30, 0x26	; 38
+ 45a:	f0 e0       	ldi	r31, 0x00	; 0
+ 45c:	80 81       	ld	r24, Z
+ 45e:	8b 7f       	andi	r24, 0xFB	; 251
+ 460:	8c 93       	st	X, r24
+ 462:	8b c0       	rjmp	.+278    	; 0x57a <__stack+0x11b>
+	}
+	else if((Copy_PtrInput->ADC_Prescalar) == ADC_PrescalarEight)                  /* check if the user entered prescalar /8 */
+ 464:	e9 81       	ldd	r30, Y+1	; 0x01
+ 466:	fa 81       	ldd	r31, Y+2	; 0x02
+ 468:	80 81       	ld	r24, Z
+ 46a:	80 7e       	andi	r24, 0xE0	; 224
+ 46c:	80 36       	cpi	r24, 0x60	; 96
+ 46e:	b1 f4       	brne	.+44     	; 0x49c <__stack+0x3d>
+	{
+		setbit(ADCSRA,ADPS0);
+ 470:	a6 e2       	ldi	r26, 0x26	; 38
+ 472:	b0 e0       	ldi	r27, 0x00	; 0
+ 474:	e6 e2       	ldi	r30, 0x26	; 38
+ 476:	f0 e0       	ldi	r31, 0x00	; 0
+ 478:	80 81       	ld	r24, Z
+ 47a:	81 60       	ori	r24, 0x01	; 1
+ 47c:	8c 93       	st	X, r24
+		setbit(ADCSRA,ADPS1);
+ 47e:	a6 e2       	ldi	r26, 0x26	; 38
+ 480:	b0 e0       	ldi	r27, 0x00	; 0
+ 482:	e6 e2       	ldi	r30, 0x26	; 38
+ 484:	f0 e0       	ldi	r31, 0x00	; 0
+ 486:	80 81       	ld	r24, Z
+ 488:	82 60       	ori	r24, 0x02	; 2
+ 48a:	8c 93       	st	X, r24
+		clearbit(ADCSRA,ADPS2);
+ 48c:	a6 e2       	ldi	r26, 0x26	; 38
+ 48e:	b0 e0       	ldi	r27, 0x00	; 0
+ 490:	e6 e2       	ldi	r30, 0x26	; 38
+ 492:	f0 e0       	ldi	r31, 0x00	; 0
+ 494:	80 81       	ld	r24, Z
+ 496:	8b 7f       	andi	r24, 0xFB	; 251
+ 498:	8c 93       	st	X, r24
+ 49a:	6f c0       	rjmp	.+222    	; 0x57a <__stack+0x11b>
+	}
+	else if((Copy_PtrInput->ADC_Prescalar) == ADC_PrescalarSixteen)                /* check if the user entered prescalar /16 */
+ 49c:	e9 81       	ldd	r30, Y+1	; 0x01
+ 49e:	fa 81       	ldd	r31, Y+2	; 0x02
+ 4a0:	80 81       	ld	r24, Z
+ 4a2:	80 7e       	andi	r24, 0xE0	; 224
+ 4a4:	80 38       	cpi	r24, 0x80	; 128
+ 4a6:	b1 f4       	brne	.+44     	; 0x4d4 <__stack+0x75>
+	{
+		clearbit(ADCSRA,ADPS0);
+ 4a8:	a6 e2       	ldi	r26, 0x26	; 38
+ 4aa:	b0 e0       	ldi	r27, 0x00	; 0
+ 4ac:	e6 e2       	ldi	r30, 0x26	; 38
+ 4ae:	f0 e0       	ldi	r31, 0x00	; 0
+ 4b0:	80 81       	ld	r24, Z
+ 4b2:	8e 7f       	andi	r24, 0xFE	; 254
+ 4b4:	8c 93       	st	X, r24
+		clearbit(ADCSRA,ADPS1);
+ 4b6:	a6 e2       	ldi	r26, 0x26	; 38
+ 4b8:	b0 e0       	ldi	r27, 0x00	; 0
+ 4ba:	e6 e2       	ldi	r30, 0x26	; 38
+ 4bc:	f0 e0       	ldi	r31, 0x00	; 0
+ 4be:	80 81       	ld	r24, Z
+ 4c0:	8d 7f       	andi	r24, 0xFD	; 253
+ 4c2:	8c 93       	st	X, r24
+		setbit(ADCSRA,ADPS2);
+ 4c4:	a6 e2       	ldi	r26, 0x26	; 38
+ 4c6:	b0 e0       	ldi	r27, 0x00	; 0
+ 4c8:	e6 e2       	ldi	r30, 0x26	; 38
+ 4ca:	f0 e0       	ldi	r31, 0x00	; 0
+ 4cc:	80 81       	ld	r24, Z
+ 4ce:	84 60       	ori	r24, 0x04	; 4
+ 4d0:	8c 93       	st	X, r24
+ 4d2:	53 c0       	rjmp	.+166    	; 0x57a <__stack+0x11b>
+	}
+	else if((Copy_PtrInput->ADC_Prescalar) == ADC_PrescalarThirtyTwo)              /* check if the user entered prescalar /32 */
+ 4d4:	e9 81       	ldd	r30, Y+1	; 0x01
+ 4d6:	fa 81       	ldd	r31, Y+2	; 0x02
+ 4d8:	80 81       	ld	r24, Z
+ 4da:	80 7e       	andi	r24, 0xE0	; 224
+ 4dc:	80 3a       	cpi	r24, 0xA0	; 160
+ 4de:	b1 f4       	brne	.+44     	; 0x50c <__stack+0xad>
+	{
+		setbit(ADCSRA,ADPS0);
+ 4e0:	a6 e2       	ldi	r26, 0x26	; 38
+ 4e2:	b0 e0       	ldi	r27, 0x00	; 0
+ 4e4:	e6 e2       	ldi	r30, 0x26	; 38
+ 4e6:	f0 e0       	ldi	r31, 0x00	; 0
+ 4e8:	80 81       	ld	r24, Z
+ 4ea:	81 60       	ori	r24, 0x01	; 1
+ 4ec:	8c 93       	st	X, r24
+		clearbit(ADCSRA,ADPS1);
+ 4ee:	a6 e2       	ldi	r26, 0x26	; 38
+ 4f0:	b0 e0       	ldi	r27, 0x00	; 0
+ 4f2:	e6 e2       	ldi	r30, 0x26	; 38
+ 4f4:	f0 e0       	ldi	r31, 0x00	; 0
+ 4f6:	80 81       	ld	r24, Z
+ 4f8:	8d 7f       	andi	r24, 0xFD	; 253
+ 4fa:	8c 93       	st	X, r24
+		setbit(ADCSRA,ADPS2);
+ 4fc:	a6 e2       	ldi	r26, 0x26	; 38
+ 4fe:	b0 e0       	ldi	r27, 0x00	; 0
+ 500:	e6 e2       	ldi	r30, 0x26	; 38
+ 502:	f0 e0       	ldi	r31, 0x00	; 0
+ 504:	80 81       	ld	r24, Z
+ 506:	84 60       	ori	r24, 0x04	; 4
+ 508:	8c 93       	st	X, r24
+ 50a:	37 c0       	rjmp	.+110    	; 0x57a <__stack+0x11b>
+	}
+	else if((Copy_PtrInput->ADC_Prescalar) == ADC_PrescalarSixtyFour)             /* check if the user entered prescalar /64 */
+ 50c:	e9 81       	ldd	r30, Y+1	; 0x01
+ 50e:	fa 81       	ldd	r31, Y+2	; 0x02
+ 510:	80 81       	ld	r24, Z
+ 512:	80 7e       	andi	r24, 0xE0	; 224
+ 514:	80 3c       	cpi	r24, 0xC0	; 192
+ 516:	b1 f4       	brne	.+44     	; 0x544 <__stack+0xe5>
+	{
+		clearbit(ADCSRA,ADPS0);
+ 518:	a6 e2       	ldi	r26, 0x26	; 38
+ 51a:	b0 e0       	ldi	r27, 0x00	; 0
+ 51c:	e6 e2       	ldi	r30, 0x26	; 38
+ 51e:	f0 e0       	ldi	r31, 0x00	; 0
+ 520:	80 81       	ld	r24, Z
+ 522:	8e 7f       	andi	r24, 0xFE	; 254
+ 524:	8c 93       	st	X, r24
+		setbit(ADCSRA,ADPS1);
+ 526:	a6 e2       	ldi	r26, 0x26	; 38
+ 528:	b0 e0       	ldi	r27, 0x00	; 0
+ 52a:	e6 e2       	ldi	r30, 0x26	; 38
+ 52c:	f0 e0       	ldi	r31, 0x00	; 0
+ 52e:	80 81       	ld	r24, Z
+ 530:	82 60       	ori	r24, 0x02	; 2
+ 532:	8c 93       	st	X, r24
+		setbit(ADCSRA,ADPS2);
+ 534:	a6 e2       	ldi	r26, 0x26	; 38
+ 536:	b0 e0       	ldi	r27, 0x00	; 0
+ 538:	e6 e2       	ldi	r30, 0x26	; 38
+ 53a:	f0 e0       	ldi	r31, 0x00	; 0
+ 53c:	80 81       	ld	r24, Z
+ 53e:	84 60       	ori	r24, 0x04	; 4
+ 540:	8c 93       	st	X, r24
+ 542:	1b c0       	rjmp	.+54     	; 0x57a <__stack+0x11b>
+	}
+	else if((Copy_PtrInput->ADC_Prescalar) == ADC_PrescalarOneHundredTwentyEight) /* check if the user entered prescalar /128 */
+ 544:	e9 81       	ldd	r30, Y+1	; 0x01
+ 546:	fa 81       	ldd	r31, Y+2	; 0x02
+ 548:	80 81       	ld	r24, Z
+ 54a:	80 7e       	andi	r24, 0xE0	; 224
+ 54c:	80 3e       	cpi	r24, 0xE0	; 224
+ 54e:	a9 f4       	brne	.+42     	; 0x57a <__stack+0x11b>
+	{
+		setbit(ADCSRA,ADPS0);
+ 550:	a6 e2       	ldi	r26, 0x26	; 38
+ 552:	b0 e0       	ldi	r27, 0x00	; 0
+ 554:	e6 e2       	ldi	r30, 0x26	; 38
+ 556:	f0 e0       	ldi	r31, 0x00	; 0
+ 558:	80 81       	ld	r24, Z
+ 55a:	81 60       	ori	r24, 0x01	; 1
+ 55c:	8c 93       	st	X, r24
+		setbit(ADCSRA,ADPS1);
+ 55e:	a6 e2       	ldi	r26, 0x26	; 38
+ 560:	b0 e0       	ldi	r27, 0x00	; 0
+ 562:	e6 e2       	ldi	r30, 0x26	; 38
+ 564:	f0 e0       	ldi	r31, 0x00	; 0
+ 566:	80 81       	ld	r24, Z
+ 568:	82 60       	ori	r24, 0x02	; 2
+ 56a:	8c 93       	st	X, r24
+		setbit(ADCSRA,ADPS2);
+ 56c:	a6 e2       	ldi	r26, 0x26	; 38
+ 56e:	b0 e0       	ldi	r27, 0x00	; 0
+ 570:	e6 e2       	ldi	r30, 0x26	; 38
+ 572:	f0 e0       	ldi	r31, 0x00	; 0
+ 574:	80 81       	ld	r24, Z
+ 576:	84 60       	ori	r24, 0x04	; 4
+ 578:	8c 93       	st	X, r24
+	{
+		/* DO NTH */
+	}
+
+	/*************** Auto-Trigger Source ***********/
+	if((Copy_PtrInput->ADC_AutoTrigSource) == ADC_AutoTrigSourFreeRunningMode)       /* check if the user wanted the Trigger-Source Free Running mode */
+ 57a:	e9 81       	ldd	r30, Y+1	; 0x01
+ 57c:	fa 81       	ldd	r31, Y+2	; 0x02
+ 57e:	81 81       	ldd	r24, Z+1	; 0x01
+ 580:	87 70       	andi	r24, 0x07	; 7
+ 582:	88 23       	and	r24, r24
+ 584:	b1 f4       	brne	.+44     	; 0x5b2 <__stack+0x153>
+	{
+		clearbit(SFIOR,ADTS0);
+ 586:	a0 e5       	ldi	r26, 0x50	; 80
+ 588:	b0 e0       	ldi	r27, 0x00	; 0
+ 58a:	e0 e5       	ldi	r30, 0x50	; 80
+ 58c:	f0 e0       	ldi	r31, 0x00	; 0
+ 58e:	80 81       	ld	r24, Z
+ 590:	8f 7d       	andi	r24, 0xDF	; 223
+ 592:	8c 93       	st	X, r24
+		clearbit(SFIOR,ADTS1);
+ 594:	a0 e5       	ldi	r26, 0x50	; 80
+ 596:	b0 e0       	ldi	r27, 0x00	; 0
+ 598:	e0 e5       	ldi	r30, 0x50	; 80
+ 59a:	f0 e0       	ldi	r31, 0x00	; 0
+ 59c:	80 81       	ld	r24, Z
+ 59e:	8f 7b       	andi	r24, 0xBF	; 191
+ 5a0:	8c 93       	st	X, r24
+		clearbit(SFIOR,ADTS2);
+ 5a2:	a0 e5       	ldi	r26, 0x50	; 80
+ 5a4:	b0 e0       	ldi	r27, 0x00	; 0
+ 5a6:	e0 e5       	ldi	r30, 0x50	; 80
+ 5a8:	f0 e0       	ldi	r31, 0x00	; 0
+ 5aa:	80 81       	ld	r24, Z
+ 5ac:	8f 77       	andi	r24, 0x7F	; 127
+ 5ae:	8c 93       	st	X, r24
+ 5b0:	c3 c0       	rjmp	.+390    	; 0x738 <__stack+0x2d9>
+	}
+	else if((Copy_PtrInput->ADC_AutoTrigSource) == ADC_AutoTrigSourAnalogComparator) /* check if the user wanted the Trigger-Source Analog Comparator */
+ 5b2:	e9 81       	ldd	r30, Y+1	; 0x01
+ 5b4:	fa 81       	ldd	r31, Y+2	; 0x02
+ 5b6:	81 81       	ldd	r24, Z+1	; 0x01
+ 5b8:	87 70       	andi	r24, 0x07	; 7
+ 5ba:	81 30       	cpi	r24, 0x01	; 1
+ 5bc:	b1 f4       	brne	.+44     	; 0x5ea <__stack+0x18b>
+	{
+		setbit(SFIOR,ADTS0);
+ 5be:	a0 e5       	ldi	r26, 0x50	; 80
+ 5c0:	b0 e0       	ldi	r27, 0x00	; 0
+ 5c2:	e0 e5       	ldi	r30, 0x50	; 80
+ 5c4:	f0 e0       	ldi	r31, 0x00	; 0
+ 5c6:	80 81       	ld	r24, Z
+ 5c8:	80 62       	ori	r24, 0x20	; 32
+ 5ca:	8c 93       	st	X, r24
+		clearbit(SFIOR,ADTS1);
+ 5cc:	a0 e5       	ldi	r26, 0x50	; 80
+ 5ce:	b0 e0       	ldi	r27, 0x00	; 0
+ 5d0:	e0 e5       	ldi	r30, 0x50	; 80
+ 5d2:	f0 e0       	ldi	r31, 0x00	; 0
+ 5d4:	80 81       	ld	r24, Z
+ 5d6:	8f 7b       	andi	r24, 0xBF	; 191
+ 5d8:	8c 93       	st	X, r24
+		clearbit(SFIOR,ADTS2);
+ 5da:	a0 e5       	ldi	r26, 0x50	; 80
+ 5dc:	b0 e0       	ldi	r27, 0x00	; 0
+ 5de:	e0 e5       	ldi	r30, 0x50	; 80
+ 5e0:	f0 e0       	ldi	r31, 0x00	; 0
+ 5e2:	80 81       	ld	r24, Z
+ 5e4:	8f 77       	andi	r24, 0x7F	; 127
+ 5e6:	8c 93       	st	X, r24
+ 5e8:	a7 c0       	rjmp	.+334    	; 0x738 <__stack+0x2d9>
+	}
+	else if((Copy_PtrInput->ADC_AutoTrigSource) == ADC_AutoTrigSourExtInterrReq0) /* check if the user wanted the Trigger-Source External Interrupt Request 0 */
+ 5ea:	e9 81       	ldd	r30, Y+1	; 0x01
+ 5ec:	fa 81       	ldd	r31, Y+2	; 0x02
+ 5ee:	81 81       	ldd	r24, Z+1	; 0x01
+ 5f0:	87 70       	andi	r24, 0x07	; 7
+ 5f2:	82 30       	cpi	r24, 0x02	; 2
+ 5f4:	b1 f4       	brne	.+44     	; 0x622 <__stack+0x1c3>
+	{
+		clearbit(SFIOR,ADTS0);
+ 5f6:	a0 e5       	ldi	r26, 0x50	; 80
+ 5f8:	b0 e0       	ldi	r27, 0x00	; 0
+ 5fa:	e0 e5       	ldi	r30, 0x50	; 80
+ 5fc:	f0 e0       	ldi	r31, 0x00	; 0
+ 5fe:	80 81       	ld	r24, Z
+ 600:	8f 7d       	andi	r24, 0xDF	; 223
+ 602:	8c 93       	st	X, r24
+		setbit(SFIOR,ADTS1);
+ 604:	a0 e5       	ldi	r26, 0x50	; 80
+ 606:	b0 e0       	ldi	r27, 0x00	; 0
+ 608:	e0 e5       	ldi	r30, 0x50	; 80
+ 60a:	f0 e0       	ldi	r31, 0x00	; 0
+ 60c:	80 81       	ld	r24, Z
+ 60e:	80 64       	ori	r24, 0x40	; 64
+ 610:	8c 93       	st	X, r24
+		clearbit(SFIOR,ADTS2);
+ 612:	a0 e5       	ldi	r26, 0x50	; 80
+ 614:	b0 e0       	ldi	r27, 0x00	; 0
+ 616:	e0 e5       	ldi	r30, 0x50	; 80
+ 618:	f0 e0       	ldi	r31, 0x00	; 0
+ 61a:	80 81       	ld	r24, Z
+ 61c:	8f 77       	andi	r24, 0x7F	; 127
+ 61e:	8c 93       	st	X, r24
+ 620:	8b c0       	rjmp	.+278    	; 0x738 <__stack+0x2d9>
+	}
+	else if((Copy_PtrInput->ADC_AutoTrigSource) == ADC_AutoTrigSourTimerCount0CompMat) /* check if the user wanted the Trigger-Source Timer/Counter0 Compare Match */
+ 622:	e9 81       	ldd	r30, Y+1	; 0x01
+ 624:	fa 81       	ldd	r31, Y+2	; 0x02
+ 626:	81 81       	ldd	r24, Z+1	; 0x01
+ 628:	87 70       	andi	r24, 0x07	; 7
+ 62a:	83 30       	cpi	r24, 0x03	; 3
+ 62c:	b1 f4       	brne	.+44     	; 0x65a <__stack+0x1fb>
+	{
+		setbit(SFIOR,ADTS0);
+ 62e:	a0 e5       	ldi	r26, 0x50	; 80
+ 630:	b0 e0       	ldi	r27, 0x00	; 0
+ 632:	e0 e5       	ldi	r30, 0x50	; 80
+ 634:	f0 e0       	ldi	r31, 0x00	; 0
+ 636:	80 81       	ld	r24, Z
+ 638:	80 62       	ori	r24, 0x20	; 32
+ 63a:	8c 93       	st	X, r24
+		setbit(SFIOR,ADTS1);
+ 63c:	a0 e5       	ldi	r26, 0x50	; 80
+ 63e:	b0 e0       	ldi	r27, 0x00	; 0
+ 640:	e0 e5       	ldi	r30, 0x50	; 80
+ 642:	f0 e0       	ldi	r31, 0x00	; 0
+ 644:	80 81       	ld	r24, Z
+ 646:	80 64       	ori	r24, 0x40	; 64
+ 648:	8c 93       	st	X, r24
+		clearbit(SFIOR,ADTS2);
+ 64a:	a0 e5       	ldi	r26, 0x50	; 80
+ 64c:	b0 e0       	ldi	r27, 0x00	; 0
+ 64e:	e0 e5       	ldi	r30, 0x50	; 80
+ 650:	f0 e0       	ldi	r31, 0x00	; 0
+ 652:	80 81       	ld	r24, Z
+ 654:	8f 77       	andi	r24, 0x7F	; 127
+ 656:	8c 93       	st	X, r24
+ 658:	6f c0       	rjmp	.+222    	; 0x738 <__stack+0x2d9>
+	}
+	else if((Copy_PtrInput->ADC_AutoTrigSource) == ADC_AutoTrigSourTimerCount0Overflow) /* check if the user wanted the Trigger-Source Timer/Counter0 Overflow */
+ 65a:	e9 81       	ldd	r30, Y+1	; 0x01
+ 65c:	fa 81       	ldd	r31, Y+2	; 0x02
+ 65e:	81 81       	ldd	r24, Z+1	; 0x01
+ 660:	87 70       	andi	r24, 0x07	; 7
+ 662:	84 30       	cpi	r24, 0x04	; 4
+ 664:	b1 f4       	brne	.+44     	; 0x692 <__stack+0x233>
+	{
+		clearbit(SFIOR,ADTS0);
+ 666:	a0 e5       	ldi	r26, 0x50	; 80
+ 668:	b0 e0       	ldi	r27, 0x00	; 0
+ 66a:	e0 e5       	ldi	r30, 0x50	; 80
+ 66c:	f0 e0       	ldi	r31, 0x00	; 0
+ 66e:	80 81       	ld	r24, Z
+ 670:	8f 7d       	andi	r24, 0xDF	; 223
+ 672:	8c 93       	st	X, r24
+		clearbit(SFIOR,ADTS1);
+ 674:	a0 e5       	ldi	r26, 0x50	; 80
+ 676:	b0 e0       	ldi	r27, 0x00	; 0
+ 678:	e0 e5       	ldi	r30, 0x50	; 80
+ 67a:	f0 e0       	ldi	r31, 0x00	; 0
+ 67c:	80 81       	ld	r24, Z
+ 67e:	8f 7b       	andi	r24, 0xBF	; 191
+ 680:	8c 93       	st	X, r24
+		setbit(SFIOR,ADTS2);
+ 682:	a0 e5       	ldi	r26, 0x50	; 80
+ 684:	b0 e0       	ldi	r27, 0x00	; 0
+ 686:	e0 e5       	ldi	r30, 0x50	; 80
+ 688:	f0 e0       	ldi	r31, 0x00	; 0
+ 68a:	80 81       	ld	r24, Z
+ 68c:	80 68       	ori	r24, 0x80	; 128
+ 68e:	8c 93       	st	X, r24
+ 690:	53 c0       	rjmp	.+166    	; 0x738 <__stack+0x2d9>
+	}
+	else if((Copy_PtrInput->ADC_AutoTrigSource) == ADC_AutoTrigsourTimerCountCompMatB) /* check if the user wanted the Trigger-Source Timer/Counter Compare Match B */
+ 692:	e9 81       	ldd	r30, Y+1	; 0x01
+ 694:	fa 81       	ldd	r31, Y+2	; 0x02
+ 696:	81 81       	ldd	r24, Z+1	; 0x01
+ 698:	87 70       	andi	r24, 0x07	; 7
+ 69a:	85 30       	cpi	r24, 0x05	; 5
+ 69c:	b1 f4       	brne	.+44     	; 0x6ca <__stack+0x26b>
+	{
+		setbit(SFIOR,ADTS0);
+ 69e:	a0 e5       	ldi	r26, 0x50	; 80
+ 6a0:	b0 e0       	ldi	r27, 0x00	; 0
+ 6a2:	e0 e5       	ldi	r30, 0x50	; 80
+ 6a4:	f0 e0       	ldi	r31, 0x00	; 0
+ 6a6:	80 81       	ld	r24, Z
+ 6a8:	80 62       	ori	r24, 0x20	; 32
+ 6aa:	8c 93       	st	X, r24
+		clearbit(SFIOR,ADTS1);
+ 6ac:	a0 e5       	ldi	r26, 0x50	; 80
+ 6ae:	b0 e0       	ldi	r27, 0x00	; 0
+ 6b0:	e0 e5       	ldi	r30, 0x50	; 80
+ 6b2:	f0 e0       	ldi	r31, 0x00	; 0
+ 6b4:	80 81       	ld	r24, Z
+ 6b6:	8f 7b       	andi	r24, 0xBF	; 191
+ 6b8:	8c 93       	st	X, r24
+		setbit(SFIOR,ADTS2);
+ 6ba:	a0 e5       	ldi	r26, 0x50	; 80
+ 6bc:	b0 e0       	ldi	r27, 0x00	; 0
+ 6be:	e0 e5       	ldi	r30, 0x50	; 80
+ 6c0:	f0 e0       	ldi	r31, 0x00	; 0
+ 6c2:	80 81       	ld	r24, Z
+ 6c4:	80 68       	ori	r24, 0x80	; 128
+ 6c6:	8c 93       	st	X, r24
+ 6c8:	37 c0       	rjmp	.+110    	; 0x738 <__stack+0x2d9>
+	}
+	else if((Copy_PtrInput->ADC_AutoTrigSource) == ADC_AutoTrigSourTimerCount1Overflow) /* check if the user wanted the Trigger-Source Timer/Counter1 Overflow*/
+ 6ca:	e9 81       	ldd	r30, Y+1	; 0x01
+ 6cc:	fa 81       	ldd	r31, Y+2	; 0x02
+ 6ce:	81 81       	ldd	r24, Z+1	; 0x01
+ 6d0:	87 70       	andi	r24, 0x07	; 7
+ 6d2:	86 30       	cpi	r24, 0x06	; 6
+ 6d4:	b1 f4       	brne	.+44     	; 0x702 <__stack+0x2a3>
+	{
+		clearbit(SFIOR,ADTS0);
+ 6d6:	a0 e5       	ldi	r26, 0x50	; 80
+ 6d8:	b0 e0       	ldi	r27, 0x00	; 0
+ 6da:	e0 e5       	ldi	r30, 0x50	; 80
+ 6dc:	f0 e0       	ldi	r31, 0x00	; 0
+ 6de:	80 81       	ld	r24, Z
+ 6e0:	8f 7d       	andi	r24, 0xDF	; 223
+ 6e2:	8c 93       	st	X, r24
+		setbit(SFIOR,ADTS1);
+ 6e4:	a0 e5       	ldi	r26, 0x50	; 80
+ 6e6:	b0 e0       	ldi	r27, 0x00	; 0
+ 6e8:	e0 e5       	ldi	r30, 0x50	; 80
+ 6ea:	f0 e0       	ldi	r31, 0x00	; 0
+ 6ec:	80 81       	ld	r24, Z
+ 6ee:	80 64       	ori	r24, 0x40	; 64
+ 6f0:	8c 93       	st	X, r24
+		setbit(SFIOR,ADTS2);
+ 6f2:	a0 e5       	ldi	r26, 0x50	; 80
+ 6f4:	b0 e0       	ldi	r27, 0x00	; 0
+ 6f6:	e0 e5       	ldi	r30, 0x50	; 80
+ 6f8:	f0 e0       	ldi	r31, 0x00	; 0
+ 6fa:	80 81       	ld	r24, Z
+ 6fc:	80 68       	ori	r24, 0x80	; 128
+ 6fe:	8c 93       	st	X, r24
+ 700:	1b c0       	rjmp	.+54     	; 0x738 <__stack+0x2d9>
+	}
+	else if((Copy_PtrInput->ADC_AutoTrigSource) == ADC_AutoTrigSourTimerCounter1CaptureEvent) /* check if the user wanted the Trigger-Source Timer/Counter1 Capture Event*/
+ 702:	e9 81       	ldd	r30, Y+1	; 0x01
+ 704:	fa 81       	ldd	r31, Y+2	; 0x02
+ 706:	81 81       	ldd	r24, Z+1	; 0x01
+ 708:	87 70       	andi	r24, 0x07	; 7
+ 70a:	87 30       	cpi	r24, 0x07	; 7
+ 70c:	a9 f4       	brne	.+42     	; 0x738 <__stack+0x2d9>
+	{
+		setbit(SFIOR,ADTS0);
+ 70e:	a0 e5       	ldi	r26, 0x50	; 80
+ 710:	b0 e0       	ldi	r27, 0x00	; 0
+ 712:	e0 e5       	ldi	r30, 0x50	; 80
+ 714:	f0 e0       	ldi	r31, 0x00	; 0
+ 716:	80 81       	ld	r24, Z
+ 718:	80 62       	ori	r24, 0x20	; 32
+ 71a:	8c 93       	st	X, r24
+		setbit(SFIOR,ADTS1);
+ 71c:	a0 e5       	ldi	r26, 0x50	; 80
+ 71e:	b0 e0       	ldi	r27, 0x00	; 0
+ 720:	e0 e5       	ldi	r30, 0x50	; 80
+ 722:	f0 e0       	ldi	r31, 0x00	; 0
+ 724:	80 81       	ld	r24, Z
+ 726:	80 64       	ori	r24, 0x40	; 64
+ 728:	8c 93       	st	X, r24
+		setbit(SFIOR,ADTS2);
+ 72a:	a0 e5       	ldi	r26, 0x50	; 80
+ 72c:	b0 e0       	ldi	r27, 0x00	; 0
+ 72e:	e0 e5       	ldi	r30, 0x50	; 80
+ 730:	f0 e0       	ldi	r31, 0x00	; 0
+ 732:	80 81       	ld	r24, Z
+ 734:	80 68       	ori	r24, 0x80	; 128
+ 736:	8c 93       	st	X, r24
+	{
+		/* DO NTH */
+	}
+
+    /*************** Auto-Trigger **************/
+	if((Copy_PtrInput->ADC_AutoTrig) == ADC_AutoTriggEn)  /* check if the user wanted to enable the auto-trigger */
+ 738:	e9 81       	ldd	r30, Y+1	; 0x01
+ 73a:	fa 81       	ldd	r31, Y+2	; 0x02
+ 73c:	82 81       	ldd	r24, Z+2	; 0x02
+ 73e:	81 70       	andi	r24, 0x01	; 1
+ 740:	88 23       	and	r24, r24
+ 742:	41 f0       	breq	.+16     	; 0x754 <__stack+0x2f5>
+	{
+		setbit(ADCSRA,ADATE);
+ 744:	a6 e2       	ldi	r26, 0x26	; 38
+ 746:	b0 e0       	ldi	r27, 0x00	; 0
+ 748:	e6 e2       	ldi	r30, 0x26	; 38
+ 74a:	f0 e0       	ldi	r31, 0x00	; 0
+ 74c:	80 81       	ld	r24, Z
+ 74e:	80 62       	ori	r24, 0x20	; 32
+ 750:	8c 93       	st	X, r24
+ 752:	0d c0       	rjmp	.+26     	; 0x76e <__stack+0x30f>
+	}
+	else if((Copy_PtrInput->ADC_AutoTrig) == ADC_AutoTriggDis) /* check if the user wanted to disable the auto-trigger */
+ 754:	e9 81       	ldd	r30, Y+1	; 0x01
+ 756:	fa 81       	ldd	r31, Y+2	; 0x02
+ 758:	82 81       	ldd	r24, Z+2	; 0x02
+ 75a:	81 70       	andi	r24, 0x01	; 1
+ 75c:	88 23       	and	r24, r24
+ 75e:	39 f4       	brne	.+14     	; 0x76e <__stack+0x30f>
+	{
+		clearbit(ADCSRA,ADATE);
+ 760:	a6 e2       	ldi	r26, 0x26	; 38
+ 762:	b0 e0       	ldi	r27, 0x00	; 0
+ 764:	e6 e2       	ldi	r30, 0x26	; 38
+ 766:	f0 e0       	ldi	r31, 0x00	; 0
+ 768:	80 81       	ld	r24, Z
+ 76a:	8f 7d       	andi	r24, 0xDF	; 223
+ 76c:	8c 93       	st	X, r24
+	{
+		/* DO NTH */
+	}
+
+	/******************** Interrupt-Enable *****************/
+	if((Copy_PtrInput->ADC_InterrEN) == ADC_InterruptEn)  /* check if the user wanted to enable the ADC interrupt */
+ 76e:	e9 81       	ldd	r30, Y+1	; 0x01
+ 770:	fa 81       	ldd	r31, Y+2	; 0x02
+ 772:	81 81       	ldd	r24, Z+1	; 0x01
+ 774:	80 74       	andi	r24, 0x40	; 64
+ 776:	88 23       	and	r24, r24
+ 778:	79 f0       	breq	.+30     	; 0x798 <__stack+0x339>
+	{
+
+		setbit(SREG,SREG_I);  /*Global Interrupt Enable*/
+ 77a:	af e5       	ldi	r26, 0x5F	; 95
+ 77c:	b0 e0       	ldi	r27, 0x00	; 0
+ 77e:	ef e5       	ldi	r30, 0x5F	; 95
+ 780:	f0 e0       	ldi	r31, 0x00	; 0
+ 782:	80 81       	ld	r24, Z
+ 784:	80 68       	ori	r24, 0x80	; 128
+ 786:	8c 93       	st	X, r24
+
+		setbit(ADCSRA,ADIE);
+ 788:	a6 e2       	ldi	r26, 0x26	; 38
+ 78a:	b0 e0       	ldi	r27, 0x00	; 0
+ 78c:	e6 e2       	ldi	r30, 0x26	; 38
+ 78e:	f0 e0       	ldi	r31, 0x00	; 0
+ 790:	80 81       	ld	r24, Z
+ 792:	88 60       	ori	r24, 0x08	; 8
+ 794:	8c 93       	st	X, r24
+ 796:	0d c0       	rjmp	.+26     	; 0x7b2 <__stack+0x353>
+
+	}
+	else if((Copy_PtrInput->ADC_InterrEN) == ADC_InterruptDis) /* check if the user wanted to disable the ADC interrupt */
+ 798:	e9 81       	ldd	r30, Y+1	; 0x01
+ 79a:	fa 81       	ldd	r31, Y+2	; 0x02
+ 79c:	81 81       	ldd	r24, Z+1	; 0x01
+ 79e:	80 74       	andi	r24, 0x40	; 64
+ 7a0:	88 23       	and	r24, r24
+ 7a2:	39 f4       	brne	.+14     	; 0x7b2 <__stack+0x353>
+	{
+
+		clearbit(ADCSRA,ADIE);
+ 7a4:	a6 e2       	ldi	r26, 0x26	; 38
+ 7a6:	b0 e0       	ldi	r27, 0x00	; 0
+ 7a8:	e6 e2       	ldi	r30, 0x26	; 38
+ 7aa:	f0 e0       	ldi	r31, 0x00	; 0
+ 7ac:	80 81       	ld	r24, Z
+ 7ae:	87 7f       	andi	r24, 0xF7	; 247
+ 7b0:	8c 93       	st	X, r24
+		/* DO NTH */
+	}
+
+	/************** ADC-ENABLE ***************/
+
+		setbit(ADCSRA,ADEN); /* enable the ADC */
+ 7b2:	a6 e2       	ldi	r26, 0x26	; 38
+ 7b4:	b0 e0       	ldi	r27, 0x00	; 0
+ 7b6:	e6 e2       	ldi	r30, 0x26	; 38
+ 7b8:	f0 e0       	ldi	r31, 0x00	; 0
+ 7ba:	80 81       	ld	r24, Z
+ 7bc:	80 62       	ori	r24, 0x20	; 32
+ 7be:	8c 93       	st	X, r24
+
+
+}
+ 7c0:	0f 90       	pop	r0
+ 7c2:	0f 90       	pop	r0
+ 7c4:	cf 91       	pop	r28
+ 7c6:	df 91       	pop	r29
+ 7c8:	08 95       	ret
+
+000007ca <ADC_u8Read>:
+
+/*Read */
+u8 ADC_u8Read(void)
+{
+ 7ca:	df 93       	push	r29
+ 7cc:	cf 93       	push	r28
+ 7ce:	0f 92       	push	r0
+ 7d0:	cd b7       	in	r28, 0x3d	; 61
+ 7d2:	de b7       	in	r29, 0x3e	; 62
+	u8 Local_Read;
+
+	/* Start Conversion */
+	setbit(ADCSRA,ADSC);
+ 7d4:	a6 e2       	ldi	r26, 0x26	; 38
+ 7d6:	b0 e0       	ldi	r27, 0x00	; 0
+ 7d8:	e6 e2       	ldi	r30, 0x26	; 38
+ 7da:	f0 e0       	ldi	r31, 0x00	; 0
+ 7dc:	80 81       	ld	r24, Z
+ 7de:	80 64       	ori	r24, 0x40	; 64
+ 7e0:	8c 93       	st	X, r24
+
+	/* Wait until interrupt flag is set */
+	while(!getbit(ADCSRA,ADIF));
+ 7e2:	e6 e2       	ldi	r30, 0x26	; 38
+ 7e4:	f0 e0       	ldi	r31, 0x00	; 0
+ 7e6:	80 81       	ld	r24, Z
+ 7e8:	88 2f       	mov	r24, r24
+ 7ea:	90 e0       	ldi	r25, 0x00	; 0
+ 7ec:	80 71       	andi	r24, 0x10	; 16
+ 7ee:	90 70       	andi	r25, 0x00	; 0
+ 7f0:	95 95       	asr	r25
+ 7f2:	87 95       	ror	r24
+ 7f4:	95 95       	asr	r25
+ 7f6:	87 95       	ror	r24
+ 7f8:	95 95       	asr	r25
+ 7fa:	87 95       	ror	r24
+ 7fc:	95 95       	asr	r25
+ 7fe:	87 95       	ror	r24
+ 800:	00 97       	sbiw	r24, 0x00	; 0
+ 802:	79 f3       	breq	.-34     	; 0x7e2 <ADC_u8Read+0x18>
+
+	/* Put the ADCH in the local variable */
+	Local_Read = ADCH ;
+ 804:	e5 e2       	ldi	r30, 0x25	; 37
+ 806:	f0 e0       	ldi	r31, 0x00	; 0
+ 808:	80 81       	ld	r24, Z
+ 80a:	89 83       	std	Y+1, r24	; 0x01
+
+	/* Clear Interrupt Flag to Enable Reading Again*/
+	setbit(ADCSRA,ADIF);
+ 80c:	a6 e2       	ldi	r26, 0x26	; 38
+ 80e:	b0 e0       	ldi	r27, 0x00	; 0
+ 810:	e6 e2       	ldi	r30, 0x26	; 38
+ 812:	f0 e0       	ldi	r31, 0x00	; 0
+ 814:	80 81       	ld	r24, Z
+ 816:	80 61       	ori	r24, 0x10	; 16
+ 818:	8c 93       	st	X, r24
+
+	return Local_Read;
+ 81a:	89 81       	ldd	r24, Y+1	; 0x01
+}
+ 81c:	0f 90       	pop	r0
+ 81e:	cf 91       	pop	r28
+ 820:	df 91       	pop	r29
+ 822:	08 95       	ret
+
+00000824 <ADC_ChangeChannel>:
+void ADC_ChangeChannel(u8 Copy_ChannelNumber)
+{
+ 824:	df 93       	push	r29
+ 826:	cf 93       	push	r28
+ 828:	00 d0       	rcall	.+0      	; 0x82a <ADC_ChangeChannel+0x6>
+ 82a:	0f 92       	push	r0
+ 82c:	cd b7       	in	r28, 0x3d	; 61
+ 82e:	de b7       	in	r29, 0x3e	; 62
+ 830:	89 83       	std	Y+1, r24	; 0x01
+	/* Disable the ADC */
+	clearbit(ADCSRA,ADEN);
+ 832:	a6 e2       	ldi	r26, 0x26	; 38
+ 834:	b0 e0       	ldi	r27, 0x00	; 0
+ 836:	e6 e2       	ldi	r30, 0x26	; 38
+ 838:	f0 e0       	ldi	r31, 0x00	; 0
+ 83a:	80 81       	ld	r24, Z
+ 83c:	8f 7d       	andi	r24, 0xDF	; 223
+ 83e:	8c 93       	st	X, r24
+
+	/* Enable the ADC */
+	setbit(ADCSRA,ADEN);
+ 840:	a6 e2       	ldi	r26, 0x26	; 38
+ 842:	b0 e0       	ldi	r27, 0x00	; 0
+ 844:	e6 e2       	ldi	r30, 0x26	; 38
+ 846:	f0 e0       	ldi	r31, 0x00	; 0
+ 848:	80 81       	ld	r24, Z
+ 84a:	80 62       	ori	r24, 0x20	; 32
+ 84c:	8c 93       	st	X, r24
+
+	/* Switch to see which channel the user wanted */
+	switch(Copy_ChannelNumber)
+ 84e:	89 81       	ldd	r24, Y+1	; 0x01
+ 850:	28 2f       	mov	r18, r24
+ 852:	30 e0       	ldi	r19, 0x00	; 0
+ 854:	3b 83       	std	Y+3, r19	; 0x03
+ 856:	2a 83       	std	Y+2, r18	; 0x02
+ 858:	8a 81       	ldd	r24, Y+2	; 0x02
+ 85a:	9b 81       	ldd	r25, Y+3	; 0x03
+ 85c:	83 30       	cpi	r24, 0x03	; 3
+ 85e:	91 05       	cpc	r25, r1
+ 860:	09 f4       	brne	.+2      	; 0x864 <ADC_ChangeChannel+0x40>
+ 862:	9b c0       	rjmp	.+310    	; 0x99a <ADC_ChangeChannel+0x176>
+ 864:	2a 81       	ldd	r18, Y+2	; 0x02
+ 866:	3b 81       	ldd	r19, Y+3	; 0x03
+ 868:	24 30       	cpi	r18, 0x04	; 4
+ 86a:	31 05       	cpc	r19, r1
+ 86c:	8c f4       	brge	.+34     	; 0x890 <ADC_ChangeChannel+0x6c>
+ 86e:	8a 81       	ldd	r24, Y+2	; 0x02
+ 870:	9b 81       	ldd	r25, Y+3	; 0x03
+ 872:	81 30       	cpi	r24, 0x01	; 1
+ 874:	91 05       	cpc	r25, r1
+ 876:	09 f4       	brne	.+2      	; 0x87a <ADC_ChangeChannel+0x56>
+ 878:	48 c0       	rjmp	.+144    	; 0x90a <ADC_ChangeChannel+0xe6>
+ 87a:	2a 81       	ldd	r18, Y+2	; 0x02
+ 87c:	3b 81       	ldd	r19, Y+3	; 0x03
+ 87e:	22 30       	cpi	r18, 0x02	; 2
+ 880:	31 05       	cpc	r19, r1
+ 882:	0c f0       	brlt	.+2      	; 0x886 <ADC_ChangeChannel+0x62>
+ 884:	66 c0       	rjmp	.+204    	; 0x952 <ADC_ChangeChannel+0x12e>
+ 886:	8a 81       	ldd	r24, Y+2	; 0x02
+ 888:	9b 81       	ldd	r25, Y+3	; 0x03
+ 88a:	00 97       	sbiw	r24, 0x00	; 0
+ 88c:	d1 f0       	breq	.+52     	; 0x8c2 <ADC_ChangeChannel+0x9e>
+ 88e:	38 c1       	rjmp	.+624    	; 0xb00 <ADC_ChangeChannel+0x2dc>
+ 890:	2a 81       	ldd	r18, Y+2	; 0x02
+ 892:	3b 81       	ldd	r19, Y+3	; 0x03
+ 894:	25 30       	cpi	r18, 0x05	; 5
+ 896:	31 05       	cpc	r19, r1
+ 898:	09 f4       	brne	.+2      	; 0x89c <ADC_ChangeChannel+0x78>
+ 89a:	c7 c0       	rjmp	.+398    	; 0xa2a <ADC_ChangeChannel+0x206>
+ 89c:	8a 81       	ldd	r24, Y+2	; 0x02
+ 89e:	9b 81       	ldd	r25, Y+3	; 0x03
+ 8a0:	85 30       	cpi	r24, 0x05	; 5
+ 8a2:	91 05       	cpc	r25, r1
+ 8a4:	0c f4       	brge	.+2      	; 0x8a8 <ADC_ChangeChannel+0x84>
+ 8a6:	9d c0       	rjmp	.+314    	; 0x9e2 <ADC_ChangeChannel+0x1be>
+ 8a8:	2a 81       	ldd	r18, Y+2	; 0x02
+ 8aa:	3b 81       	ldd	r19, Y+3	; 0x03
+ 8ac:	26 30       	cpi	r18, 0x06	; 6
+ 8ae:	31 05       	cpc	r19, r1
+ 8b0:	09 f4       	brne	.+2      	; 0x8b4 <ADC_ChangeChannel+0x90>
+ 8b2:	df c0       	rjmp	.+446    	; 0xa72 <ADC_ChangeChannel+0x24e>
+ 8b4:	8a 81       	ldd	r24, Y+2	; 0x02
+ 8b6:	9b 81       	ldd	r25, Y+3	; 0x03
+ 8b8:	87 30       	cpi	r24, 0x07	; 7
+ 8ba:	91 05       	cpc	r25, r1
+ 8bc:	09 f4       	brne	.+2      	; 0x8c0 <ADC_ChangeChannel+0x9c>
+ 8be:	fd c0       	rjmp	.+506    	; 0xaba <ADC_ChangeChannel+0x296>
+ 8c0:	1f c1       	rjmp	.+574    	; 0xb00 <ADC_ChangeChannel+0x2dc>
+	{
+	case ADC_Channel0SE :
+		clearbit(ADMUX,MUX0);
+ 8c2:	a7 e2       	ldi	r26, 0x27	; 39
+ 8c4:	b0 e0       	ldi	r27, 0x00	; 0
+ 8c6:	e7 e2       	ldi	r30, 0x27	; 39
+ 8c8:	f0 e0       	ldi	r31, 0x00	; 0
+ 8ca:	80 81       	ld	r24, Z
+ 8cc:	8e 7f       	andi	r24, 0xFE	; 254
+ 8ce:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX1);
+ 8d0:	a7 e2       	ldi	r26, 0x27	; 39
+ 8d2:	b0 e0       	ldi	r27, 0x00	; 0
+ 8d4:	e7 e2       	ldi	r30, 0x27	; 39
+ 8d6:	f0 e0       	ldi	r31, 0x00	; 0
+ 8d8:	80 81       	ld	r24, Z
+ 8da:	8d 7f       	andi	r24, 0xFD	; 253
+ 8dc:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX2);
+ 8de:	a7 e2       	ldi	r26, 0x27	; 39
+ 8e0:	b0 e0       	ldi	r27, 0x00	; 0
+ 8e2:	e7 e2       	ldi	r30, 0x27	; 39
+ 8e4:	f0 e0       	ldi	r31, 0x00	; 0
+ 8e6:	80 81       	ld	r24, Z
+ 8e8:	8b 7f       	andi	r24, 0xFB	; 251
+ 8ea:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 8ec:	a7 e2       	ldi	r26, 0x27	; 39
+ 8ee:	b0 e0       	ldi	r27, 0x00	; 0
+ 8f0:	e7 e2       	ldi	r30, 0x27	; 39
+ 8f2:	f0 e0       	ldi	r31, 0x00	; 0
+ 8f4:	80 81       	ld	r24, Z
+ 8f6:	87 7f       	andi	r24, 0xF7	; 247
+ 8f8:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 8fa:	a7 e2       	ldi	r26, 0x27	; 39
+ 8fc:	b0 e0       	ldi	r27, 0x00	; 0
+ 8fe:	e7 e2       	ldi	r30, 0x27	; 39
+ 900:	f0 e0       	ldi	r31, 0x00	; 0
+ 902:	80 81       	ld	r24, Z
+ 904:	8f 7e       	andi	r24, 0xEF	; 239
+ 906:	8c 93       	st	X, r24
+ 908:	fb c0       	rjmp	.+502    	; 0xb00 <ADC_ChangeChannel+0x2dc>
+		break;
+	case ADC_Channel1SE :
+		setbit(ADMUX,MUX0);
+ 90a:	a7 e2       	ldi	r26, 0x27	; 39
+ 90c:	b0 e0       	ldi	r27, 0x00	; 0
+ 90e:	e7 e2       	ldi	r30, 0x27	; 39
+ 910:	f0 e0       	ldi	r31, 0x00	; 0
+ 912:	80 81       	ld	r24, Z
+ 914:	81 60       	ori	r24, 0x01	; 1
+ 916:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX1);
+ 918:	a7 e2       	ldi	r26, 0x27	; 39
+ 91a:	b0 e0       	ldi	r27, 0x00	; 0
+ 91c:	e7 e2       	ldi	r30, 0x27	; 39
+ 91e:	f0 e0       	ldi	r31, 0x00	; 0
+ 920:	80 81       	ld	r24, Z
+ 922:	8d 7f       	andi	r24, 0xFD	; 253
+ 924:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX2);
+ 926:	a7 e2       	ldi	r26, 0x27	; 39
+ 928:	b0 e0       	ldi	r27, 0x00	; 0
+ 92a:	e7 e2       	ldi	r30, 0x27	; 39
+ 92c:	f0 e0       	ldi	r31, 0x00	; 0
+ 92e:	80 81       	ld	r24, Z
+ 930:	8b 7f       	andi	r24, 0xFB	; 251
+ 932:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 934:	a7 e2       	ldi	r26, 0x27	; 39
+ 936:	b0 e0       	ldi	r27, 0x00	; 0
+ 938:	e7 e2       	ldi	r30, 0x27	; 39
+ 93a:	f0 e0       	ldi	r31, 0x00	; 0
+ 93c:	80 81       	ld	r24, Z
+ 93e:	87 7f       	andi	r24, 0xF7	; 247
+ 940:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 942:	a7 e2       	ldi	r26, 0x27	; 39
+ 944:	b0 e0       	ldi	r27, 0x00	; 0
+ 946:	e7 e2       	ldi	r30, 0x27	; 39
+ 948:	f0 e0       	ldi	r31, 0x00	; 0
+ 94a:	80 81       	ld	r24, Z
+ 94c:	8f 7e       	andi	r24, 0xEF	; 239
+ 94e:	8c 93       	st	X, r24
+ 950:	d7 c0       	rjmp	.+430    	; 0xb00 <ADC_ChangeChannel+0x2dc>
+		break;
+	case ADC_Channel2SE :
+		clearbit(ADMUX,MUX0);
+ 952:	a7 e2       	ldi	r26, 0x27	; 39
+ 954:	b0 e0       	ldi	r27, 0x00	; 0
+ 956:	e7 e2       	ldi	r30, 0x27	; 39
+ 958:	f0 e0       	ldi	r31, 0x00	; 0
+ 95a:	80 81       	ld	r24, Z
+ 95c:	8e 7f       	andi	r24, 0xFE	; 254
+ 95e:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX1);
+ 960:	a7 e2       	ldi	r26, 0x27	; 39
+ 962:	b0 e0       	ldi	r27, 0x00	; 0
+ 964:	e7 e2       	ldi	r30, 0x27	; 39
+ 966:	f0 e0       	ldi	r31, 0x00	; 0
+ 968:	80 81       	ld	r24, Z
+ 96a:	82 60       	ori	r24, 0x02	; 2
+ 96c:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX2);
+ 96e:	a7 e2       	ldi	r26, 0x27	; 39
+ 970:	b0 e0       	ldi	r27, 0x00	; 0
+ 972:	e7 e2       	ldi	r30, 0x27	; 39
+ 974:	f0 e0       	ldi	r31, 0x00	; 0
+ 976:	80 81       	ld	r24, Z
+ 978:	8b 7f       	andi	r24, 0xFB	; 251
+ 97a:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 97c:	a7 e2       	ldi	r26, 0x27	; 39
+ 97e:	b0 e0       	ldi	r27, 0x00	; 0
+ 980:	e7 e2       	ldi	r30, 0x27	; 39
+ 982:	f0 e0       	ldi	r31, 0x00	; 0
+ 984:	80 81       	ld	r24, Z
+ 986:	87 7f       	andi	r24, 0xF7	; 247
+ 988:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 98a:	a7 e2       	ldi	r26, 0x27	; 39
+ 98c:	b0 e0       	ldi	r27, 0x00	; 0
+ 98e:	e7 e2       	ldi	r30, 0x27	; 39
+ 990:	f0 e0       	ldi	r31, 0x00	; 0
+ 992:	80 81       	ld	r24, Z
+ 994:	8f 7e       	andi	r24, 0xEF	; 239
+ 996:	8c 93       	st	X, r24
+ 998:	b3 c0       	rjmp	.+358    	; 0xb00 <ADC_ChangeChannel+0x2dc>
+		break;
+	case ADC_Channel3SE :
+		setbit(ADMUX,MUX0);
+ 99a:	a7 e2       	ldi	r26, 0x27	; 39
+ 99c:	b0 e0       	ldi	r27, 0x00	; 0
+ 99e:	e7 e2       	ldi	r30, 0x27	; 39
+ 9a0:	f0 e0       	ldi	r31, 0x00	; 0
+ 9a2:	80 81       	ld	r24, Z
+ 9a4:	81 60       	ori	r24, 0x01	; 1
+ 9a6:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX1);
+ 9a8:	a7 e2       	ldi	r26, 0x27	; 39
+ 9aa:	b0 e0       	ldi	r27, 0x00	; 0
+ 9ac:	e7 e2       	ldi	r30, 0x27	; 39
+ 9ae:	f0 e0       	ldi	r31, 0x00	; 0
+ 9b0:	80 81       	ld	r24, Z
+ 9b2:	82 60       	ori	r24, 0x02	; 2
+ 9b4:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX2);
+ 9b6:	a7 e2       	ldi	r26, 0x27	; 39
+ 9b8:	b0 e0       	ldi	r27, 0x00	; 0
+ 9ba:	e7 e2       	ldi	r30, 0x27	; 39
+ 9bc:	f0 e0       	ldi	r31, 0x00	; 0
+ 9be:	80 81       	ld	r24, Z
+ 9c0:	8b 7f       	andi	r24, 0xFB	; 251
+ 9c2:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ 9c4:	a7 e2       	ldi	r26, 0x27	; 39
+ 9c6:	b0 e0       	ldi	r27, 0x00	; 0
+ 9c8:	e7 e2       	ldi	r30, 0x27	; 39
+ 9ca:	f0 e0       	ldi	r31, 0x00	; 0
+ 9cc:	80 81       	ld	r24, Z
+ 9ce:	87 7f       	andi	r24, 0xF7	; 247
+ 9d0:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ 9d2:	a7 e2       	ldi	r26, 0x27	; 39
+ 9d4:	b0 e0       	ldi	r27, 0x00	; 0
+ 9d6:	e7 e2       	ldi	r30, 0x27	; 39
+ 9d8:	f0 e0       	ldi	r31, 0x00	; 0
+ 9da:	80 81       	ld	r24, Z
+ 9dc:	8f 7e       	andi	r24, 0xEF	; 239
+ 9de:	8c 93       	st	X, r24
+ 9e0:	8f c0       	rjmp	.+286    	; 0xb00 <ADC_ChangeChannel+0x2dc>
+		break;
+	case ADC_Channel4SE :
+		clearbit(ADMUX,MUX0);
+ 9e2:	a7 e2       	ldi	r26, 0x27	; 39
+ 9e4:	b0 e0       	ldi	r27, 0x00	; 0
+ 9e6:	e7 e2       	ldi	r30, 0x27	; 39
+ 9e8:	f0 e0       	ldi	r31, 0x00	; 0
+ 9ea:	80 81       	ld	r24, Z
+ 9ec:	8e 7f       	andi	r24, 0xFE	; 254
+ 9ee:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX1);
+ 9f0:	a7 e2       	ldi	r26, 0x27	; 39
+ 9f2:	b0 e0       	ldi	r27, 0x00	; 0
+ 9f4:	e7 e2       	ldi	r30, 0x27	; 39
+ 9f6:	f0 e0       	ldi	r31, 0x00	; 0
+ 9f8:	80 81       	ld	r24, Z
+ 9fa:	8d 7f       	andi	r24, 0xFD	; 253
+ 9fc:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX2);
+ 9fe:	a7 e2       	ldi	r26, 0x27	; 39
+ a00:	b0 e0       	ldi	r27, 0x00	; 0
+ a02:	e7 e2       	ldi	r30, 0x27	; 39
+ a04:	f0 e0       	ldi	r31, 0x00	; 0
+ a06:	80 81       	ld	r24, Z
+ a08:	84 60       	ori	r24, 0x04	; 4
+ a0a:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ a0c:	a7 e2       	ldi	r26, 0x27	; 39
+ a0e:	b0 e0       	ldi	r27, 0x00	; 0
+ a10:	e7 e2       	ldi	r30, 0x27	; 39
+ a12:	f0 e0       	ldi	r31, 0x00	; 0
+ a14:	80 81       	ld	r24, Z
+ a16:	87 7f       	andi	r24, 0xF7	; 247
+ a18:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ a1a:	a7 e2       	ldi	r26, 0x27	; 39
+ a1c:	b0 e0       	ldi	r27, 0x00	; 0
+ a1e:	e7 e2       	ldi	r30, 0x27	; 39
+ a20:	f0 e0       	ldi	r31, 0x00	; 0
+ a22:	80 81       	ld	r24, Z
+ a24:	8f 7e       	andi	r24, 0xEF	; 239
+ a26:	8c 93       	st	X, r24
+ a28:	6b c0       	rjmp	.+214    	; 0xb00 <ADC_ChangeChannel+0x2dc>
+		break;
+	case ADC_Channel5SE :
+		setbit(ADMUX,MUX0);
+ a2a:	a7 e2       	ldi	r26, 0x27	; 39
+ a2c:	b0 e0       	ldi	r27, 0x00	; 0
+ a2e:	e7 e2       	ldi	r30, 0x27	; 39
+ a30:	f0 e0       	ldi	r31, 0x00	; 0
+ a32:	80 81       	ld	r24, Z
+ a34:	81 60       	ori	r24, 0x01	; 1
+ a36:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX1);
+ a38:	a7 e2       	ldi	r26, 0x27	; 39
+ a3a:	b0 e0       	ldi	r27, 0x00	; 0
+ a3c:	e7 e2       	ldi	r30, 0x27	; 39
+ a3e:	f0 e0       	ldi	r31, 0x00	; 0
+ a40:	80 81       	ld	r24, Z
+ a42:	8d 7f       	andi	r24, 0xFD	; 253
+ a44:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX2);
+ a46:	a7 e2       	ldi	r26, 0x27	; 39
+ a48:	b0 e0       	ldi	r27, 0x00	; 0
+ a4a:	e7 e2       	ldi	r30, 0x27	; 39
+ a4c:	f0 e0       	ldi	r31, 0x00	; 0
+ a4e:	80 81       	ld	r24, Z
+ a50:	84 60       	ori	r24, 0x04	; 4
+ a52:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ a54:	a7 e2       	ldi	r26, 0x27	; 39
+ a56:	b0 e0       	ldi	r27, 0x00	; 0
+ a58:	e7 e2       	ldi	r30, 0x27	; 39
+ a5a:	f0 e0       	ldi	r31, 0x00	; 0
+ a5c:	80 81       	ld	r24, Z
+ a5e:	87 7f       	andi	r24, 0xF7	; 247
+ a60:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ a62:	a7 e2       	ldi	r26, 0x27	; 39
+ a64:	b0 e0       	ldi	r27, 0x00	; 0
+ a66:	e7 e2       	ldi	r30, 0x27	; 39
+ a68:	f0 e0       	ldi	r31, 0x00	; 0
+ a6a:	80 81       	ld	r24, Z
+ a6c:	8f 7e       	andi	r24, 0xEF	; 239
+ a6e:	8c 93       	st	X, r24
+ a70:	47 c0       	rjmp	.+142    	; 0xb00 <ADC_ChangeChannel+0x2dc>
+		break;
+	case ADC_Channel6SE :
+		clearbit(ADMUX,MUX0);
+ a72:	a7 e2       	ldi	r26, 0x27	; 39
+ a74:	b0 e0       	ldi	r27, 0x00	; 0
+ a76:	e7 e2       	ldi	r30, 0x27	; 39
+ a78:	f0 e0       	ldi	r31, 0x00	; 0
+ a7a:	80 81       	ld	r24, Z
+ a7c:	8e 7f       	andi	r24, 0xFE	; 254
+ a7e:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX1);
+ a80:	a7 e2       	ldi	r26, 0x27	; 39
+ a82:	b0 e0       	ldi	r27, 0x00	; 0
+ a84:	e7 e2       	ldi	r30, 0x27	; 39
+ a86:	f0 e0       	ldi	r31, 0x00	; 0
+ a88:	80 81       	ld	r24, Z
+ a8a:	82 60       	ori	r24, 0x02	; 2
+ a8c:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX2);
+ a8e:	a7 e2       	ldi	r26, 0x27	; 39
+ a90:	b0 e0       	ldi	r27, 0x00	; 0
+ a92:	e7 e2       	ldi	r30, 0x27	; 39
+ a94:	f0 e0       	ldi	r31, 0x00	; 0
+ a96:	80 81       	ld	r24, Z
+ a98:	84 60       	ori	r24, 0x04	; 4
+ a9a:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ a9c:	a7 e2       	ldi	r26, 0x27	; 39
+ a9e:	b0 e0       	ldi	r27, 0x00	; 0
+ aa0:	e7 e2       	ldi	r30, 0x27	; 39
+ aa2:	f0 e0       	ldi	r31, 0x00	; 0
+ aa4:	80 81       	ld	r24, Z
+ aa6:	87 7f       	andi	r24, 0xF7	; 247
+ aa8:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ aaa:	a7 e2       	ldi	r26, 0x27	; 39
+ aac:	b0 e0       	ldi	r27, 0x00	; 0
+ aae:	e7 e2       	ldi	r30, 0x27	; 39
+ ab0:	f0 e0       	ldi	r31, 0x00	; 0
+ ab2:	80 81       	ld	r24, Z
+ ab4:	8f 7e       	andi	r24, 0xEF	; 239
+ ab6:	8c 93       	st	X, r24
+ ab8:	23 c0       	rjmp	.+70     	; 0xb00 <ADC_ChangeChannel+0x2dc>
+		break;
+	case ADC_Channel7SE :
+		setbit(ADMUX,MUX0);
+ aba:	a7 e2       	ldi	r26, 0x27	; 39
+ abc:	b0 e0       	ldi	r27, 0x00	; 0
+ abe:	e7 e2       	ldi	r30, 0x27	; 39
+ ac0:	f0 e0       	ldi	r31, 0x00	; 0
+ ac2:	80 81       	ld	r24, Z
+ ac4:	81 60       	ori	r24, 0x01	; 1
+ ac6:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX1);
+ ac8:	a7 e2       	ldi	r26, 0x27	; 39
+ aca:	b0 e0       	ldi	r27, 0x00	; 0
+ acc:	e7 e2       	ldi	r30, 0x27	; 39
+ ace:	f0 e0       	ldi	r31, 0x00	; 0
+ ad0:	80 81       	ld	r24, Z
+ ad2:	82 60       	ori	r24, 0x02	; 2
+ ad4:	8c 93       	st	X, r24
+		setbit(ADMUX,MUX2);
+ ad6:	a7 e2       	ldi	r26, 0x27	; 39
+ ad8:	b0 e0       	ldi	r27, 0x00	; 0
+ ada:	e7 e2       	ldi	r30, 0x27	; 39
+ adc:	f0 e0       	ldi	r31, 0x00	; 0
+ ade:	80 81       	ld	r24, Z
+ ae0:	84 60       	ori	r24, 0x04	; 4
+ ae2:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX3);
+ ae4:	a7 e2       	ldi	r26, 0x27	; 39
+ ae6:	b0 e0       	ldi	r27, 0x00	; 0
+ ae8:	e7 e2       	ldi	r30, 0x27	; 39
+ aea:	f0 e0       	ldi	r31, 0x00	; 0
+ aec:	80 81       	ld	r24, Z
+ aee:	87 7f       	andi	r24, 0xF7	; 247
+ af0:	8c 93       	st	X, r24
+		clearbit(ADMUX,MUX4);
+ af2:	a7 e2       	ldi	r26, 0x27	; 39
+ af4:	b0 e0       	ldi	r27, 0x00	; 0
+ af6:	e7 e2       	ldi	r30, 0x27	; 39
+ af8:	f0 e0       	ldi	r31, 0x00	; 0
+ afa:	80 81       	ld	r24, Z
+ afc:	8f 7e       	andi	r24, 0xEF	; 239
+ afe:	8c 93       	st	X, r24
+		break;
+	}
+
+
+
+}
+ b00:	0f 90       	pop	r0
+ b02:	0f 90       	pop	r0
+ b04:	0f 90       	pop	r0
+ b06:	cf 91       	pop	r28
+ b08:	df 91       	pop	r29
+ b0a:	08 95       	ret
+
+00000b0c <main>:
+ *  Created on: ??þ/??þ/????
+ *      Author: Yara
+ */
+
+void main(void)
+{
+ b0c:	df 93       	push	r29
+ b0e:	cf 93       	push	r28
+ b10:	cd b7       	in	r28, 0x3d	; 61
+ b12:	de b7       	in	r29, 0x3e	; 62
+
+}
+ b14:	cf 91       	pop	r28
+ b16:	df 91       	pop	r29
+ b18:	08 95       	ret
+
+00000b1a <_exit>:
+ b1a:	f8 94       	cli
+
+00000b1c <__stop_program>:
+ b1c:	ff cf       	rjmp	.-2      	; 0xb1c <__stop_program>

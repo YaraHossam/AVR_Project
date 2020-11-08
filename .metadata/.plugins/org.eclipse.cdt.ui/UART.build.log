@@ -1,0 +1,77 @@
+01:03:51 **** Incremental Build of configuration Debug for project UART ****
+make all 
+Building file: ../main_uart.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"main_uart.d" -MT"main_uart.o" -c -o "main_uart.o" "../main_uart.c"
+In file included from ../main_uart.c:11:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../main_uart.c:11:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../main_uart.c:13: warning: return type of 'main' is not 'int'
+Finished building: ../main_uart.c
+ 
+Building target: UART.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,UART.map -mmcu=atmega32 -o "UART.elf"  ./DIO_Pro.o ./UART_FUN.o ./main_uart.o   
+Finished building target: UART.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S UART.elf  >"UART.lss"
+Finished building: UART.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex UART.elf  "UART.hex"
+Finished building: UART.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 UART.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    7184 bytes (21.9% Full)
+(.text + .data + .bootloader)
+
+Data:          8 bytes (0.4% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+Invoking: AVRDude
+C:\WinAVR-20100110\bin\avrdude -pm32 -cusbasp -Uflash:w:UART.hex:a
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.00s
+
+avrdude: Device signature = 0x1e9502
+avrdude: NOTE: FLASH memory has been specified, an erase cycle will be performed
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file "UART.hex"
+avrdude: input file UART.hex auto detected as Intel Hex
+avrdude: writing flash (7184 bytes):
+
+Writing | ################################################## | 100% 2.95s
+
+avrdude: 7184 bytes of flash written
+avrdude: verifying flash memory against UART.hex:
+avrdude: load data flash data from input file UART.hex:
+avrdude: input file UART.hex auto detected as Intel Hex
+avrdude: input file UART.hex contains 7184 bytes
+avrdude: reading on-chip flash data:
+
+Reading | ################################################## | 100% 1.83s
+
+avrdude: verifying ...
+avrdude: 7184 bytes of flash verified
+
+avrdude done.  Thank you.
+
+Finished building: avrdudedummy
+ 
+
+01:03:57 Build Finished (took 6s.112ms)
+

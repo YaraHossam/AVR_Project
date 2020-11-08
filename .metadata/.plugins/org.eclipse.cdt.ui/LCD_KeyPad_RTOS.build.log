@@ -1,0 +1,33 @@
+11:43:01 **** Incremental Build of configuration Debug for project LCD_KeyPad_RTOS ****
+make all 
+Building target: LCD_KeyPad_RTOS.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,LCD_KeyPad_RTOS.map -mmcu=atmega32 -o "LCD_KeyPad_RTOS.elf"  ./DIO_Pro.o ./Keypad_Pro.o ./LCD_Pro.o ./RTOS_Pro.o ./Timer0_Pro.o ./main_RTOS.o   
+Finished building target: LCD_KeyPad_RTOS.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S LCD_KeyPad_RTOS.elf  >"LCD_KeyPad_RTOS.lss"
+Finished building: LCD_KeyPad_RTOS.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex LCD_KeyPad_RTOS.elf  "LCD_KeyPad_RTOS.hex"
+Finished building: LCD_KeyPad_RTOS.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 LCD_KeyPad_RTOS.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    9950 bytes (30.4% Full)
+(.text + .data + .bootloader)
+
+Data:         40 bytes (2.0% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+11:43:05 Build Finished (took 4s.138ms)
+

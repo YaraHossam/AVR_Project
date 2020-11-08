@@ -1,0 +1,38 @@
+09:52:28 **** Incremental Build of configuration Debug for project Gate_security ****
+make all 
+Building file: ../Keypad_Pro.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"Keypad_Pro.d" -MT"Keypad_Pro.o" -c -o "Keypad_Pro.o" "../Keypad_Pro.c"
+Finished building: ../Keypad_Pro.c
+ 
+Building target: Gate_security.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Gate_security.map -mmcu=atmega32 -o "Gate_security.elf"  ./DIO_Pro.o ./Keypad_Pro.o ./LCD_Pro.o ./fun_pro.o ./main_storehouse.o ./seven_segment_Pro.o   
+Finished building target: Gate_security.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S Gate_security.elf  >"Gate_security.lss"
+Finished building: Gate_security.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex Gate_security.elf  "Gate_security.hex"
+Finished building: Gate_security.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 Gate_security.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:   14478 bytes (44.2% Full)
+(.text + .data + .bootloader)
+
+Data:         63 bytes (3.1% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+09:52:29 Build Finished (took 1s.357ms)
+

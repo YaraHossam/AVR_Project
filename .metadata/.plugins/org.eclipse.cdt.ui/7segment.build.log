@@ -1,0 +1,13 @@
+00:36:42 **** Incremental Build of configuration Debug for project 7segment ****
+make all 
+Building file: ../7segment_Pro.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"7segment_Pro.d" -MT"7segment_Pro.o" -c -o "7segment_Pro.o" "../7segment_Pro.c"
+In file included from ../7segment_Pro.c:11:
+../7segment_interface.h:8:9: error: macro names must be identifiers
+../7segment_Pro.c:18:6: error: invalid suffix "segment_output" on integer constant
+../7segment_Pro.c:18: error: expected identifier or '(' before numeric constant
+make: *** [7segment_Pro.o] Error 1
+
+00:36:42 Build Finished (took 172ms)
+

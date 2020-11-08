@@ -1,0 +1,53 @@
+13:20:37 **** Incremental Build of configuration Debug for project External_Interrupte ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 External_Interrupte.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    8514 bytes (26.0% Full)
+(.text + .data + .bootloader)
+
+Data:          8 bytes (0.4% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+Invoking: AVRDude
+C:\WinAVR-20100110\bin\avrdude -pm32 -cusbasp -Uflash:w:External_Interrupte.hex:a
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.00s
+
+avrdude: Device signature = 0x1e9502
+avrdude: NOTE: FLASH memory has been specified, an erase cycle will be performed
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file "External_Interrupte.hex"
+avrdude: input file External_Interrupte.hex auto detected as Intel Hex
+avrdude: writing flash (8514 bytes):
+
+Writing | ################################################## | 100% 3.48s
+
+avrdude: 8514 bytes of flash written
+avrdude: verifying flash memory against External_Interrupte.hex:
+avrdude: load data flash data from input file External_Interrupte.hex:
+avrdude: input file External_Interrupte.hex auto detected as Intel Hex
+avrdude: input file External_Interrupte.hex contains 8514 bytes
+avrdude: reading on-chip flash data:
+
+Reading | ################################################## | 100% 2.16s
+
+avrdude: verifying ...
+avrdude: 8514 bytes of flash verified
+
+avrdude done.  Thank you.
+
+Finished building: avrdudedummy
+ 
+
+13:20:43 Build Finished (took 6s.111ms)
+

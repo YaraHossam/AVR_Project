@@ -1,0 +1,44 @@
+09:44:05 **** Incremental Build of configuration Debug for project I2C_ArduinoMaster ****
+make all 
+Building file: ../master_main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=1000000UL -MMD -MP -MF"master_main.d" -MT"master_main.o" -c -o "master_main.o" "../master_main.c"
+In file included from ../master_main.c:3:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../master_main.c:3:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../master_main.c:9: warning: return type of 'main' is not 'int'
+Finished building: ../master_main.c
+ 
+Building target: I2C_ArduinoMaster.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,I2C_ArduinoMaster.map -mmcu=atmega328p -o "I2C_ArduinoMaster.elf"  ./ADC.o ./master.o ./master_main.o   
+Finished building target: I2C_ArduinoMaster.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S I2C_ArduinoMaster.elf  >"I2C_ArduinoMaster.lss"
+Finished building: I2C_ArduinoMaster.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex I2C_ArduinoMaster.elf  "I2C_ArduinoMaster.hex"
+Finished building: I2C_ArduinoMaster.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega328p I2C_ArduinoMaster.elf
+AVR Memory Usage
+----------------
+Device: atmega328p
+
+Program:    5202 bytes (15.9% Full)
+(.text + .data + .bootloader)
+
+Data:         12 bytes (0.6% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+09:44:06 Build Finished (took 942ms)
+

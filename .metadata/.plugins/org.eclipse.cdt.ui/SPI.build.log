@@ -1,0 +1,40 @@
+13:49:25 **** Incremental Build of configuration Debug for project SPI ****
+make all 
+Building file: ../SPI_Proj.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"SPI_Proj.d" -MT"SPI_Proj.o" -c -o "SPI_Proj.o" "../SPI_Proj.c"
+Finished building: ../SPI_Proj.c
+ 
+Building file: ../main_SPI.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"main_SPI.d" -MT"main_SPI.o" -c -o "main_SPI.o" "../main_SPI.c"
+../main_SPI.c:9: warning: return type of 'main' is not 'int'
+Finished building: ../main_SPI.c
+ 
+Building target: SPI.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,SPI.map -mmcu=atmega16 -o "SPI.elf"  ./DIO_Pro.o ./SPI_Proj.o ./main_SPI.o   
+Finished building target: SPI.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S SPI.elf  >"SPI.lss"
+Finished building: SPI.lss
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 SPI.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:    3668 bytes (22.4% Full)
+(.text + .data + .bootloader)
+
+Data:          0 bytes (0.0% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+13:49:26 Build Finished (took 548ms)
+

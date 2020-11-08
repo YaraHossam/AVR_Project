@@ -1,0 +1,68 @@
+23:41:36 **** Incremental Build of configuration Debug for project I2C_ArduinoSlave ****
+make all 
+Building file: ../DIO_Pro.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=1000000UL -MMD -MP -MF"DIO_Pro.d" -MT"DIO_Pro.o" -c -o "DIO_Pro.o" "../DIO_Pro.c"
+Finished building: ../DIO_Pro.c
+ 
+Building file: ../LCD_Pro.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=1000000UL -MMD -MP -MF"LCD_Pro.d" -MT"LCD_Pro.o" -c -o "LCD_Pro.o" "../LCD_Pro.c"
+In file included from ../LCD_Pro.c:14:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../LCD_Pro.c:14:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../LCD_Pro.c: In function 'LCD_vWriteString':
+../LCD_Pro.c:93: warning: implicit declaration of function 'strlen'
+../LCD_Pro.c:93: warning: incompatible implicit declaration of built-in function 'strlen'
+../LCD_Pro.c:93: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness
+Finished building: ../LCD_Pro.c
+ 
+Building file: ../slave.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=1000000UL -MMD -MP -MF"slave.d" -MT"slave.o" -c -o "slave.o" "../slave.c"
+Finished building: ../slave.c
+ 
+Building file: ../slave_main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega328p -DF_CPU=1000000UL -MMD -MP -MF"slave_main.d" -MT"slave_main.o" -c -o "slave_main.o" "../slave_main.c"
+In file included from ../slave_main.c:11:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../slave_main.c:11:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../slave_main.c:14: warning: return type of 'main' is not 'int'
+Finished building: ../slave_main.c
+ 
+Building target: I2C_ArduinoSlave.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,I2C_ArduinoSlave.map -mmcu=atmega328p -o "I2C_ArduinoSlave.elf"  ./DIO_Pro.o ./LCD_Pro.o ./slave.o ./slave_main.o   
+Finished building target: I2C_ArduinoSlave.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S I2C_ArduinoSlave.elf  >"I2C_ArduinoSlave.lss"
+Finished building: I2C_ArduinoSlave.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex I2C_ArduinoSlave.elf  "I2C_ArduinoSlave.hex"
+Finished building: I2C_ArduinoSlave.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega328p I2C_ArduinoSlave.elf
+AVR Memory Usage
+----------------
+Device: atmega328p
+
+Program:    8036 bytes (24.5% Full)
+(.text + .data + .bootloader)
+
+Data:          8 bytes (0.4% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+23:41:38 Build Finished (took 1s.495ms)
+

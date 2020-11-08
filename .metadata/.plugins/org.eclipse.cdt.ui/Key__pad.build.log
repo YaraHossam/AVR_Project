@@ -1,0 +1,7 @@
+19:54:48 **** Clean-only build of configuration Debug for project Key__pad ****
+make clean 
+rm -rf  Key__pad.hex  ./DIO_Pro.o ./Keypad_Pro.o ./main_key.o  sizedummy  Key__pad.lss  ./DIO_Pro.d ./Keypad_Pro.d ./main_key.d  Key__pad.elf
+ 
+
+19:54:48 Build Finished (took 517ms)
+

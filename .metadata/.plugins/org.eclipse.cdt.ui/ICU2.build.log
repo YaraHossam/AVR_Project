@@ -1,0 +1,27 @@
+20:39:04 **** Incremental Build of configuration Debug for project ICU2 ****
+make all 
+Building file: ../LCD_Pro.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"LCD_Pro.d" -MT"LCD_Pro.o" -c -o "LCD_Pro.o" "../LCD_Pro.c"
+In file included from ../LCD_Pro.c:14:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../LCD_Pro.c:14:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../LCD_Pro.c: In function 'LCD_vInitialize':
+../LCD_Pro.c:52: warning: implicit declaration of function 'DIO_vSetPortDirec'
+../LCD_Pro.c: In function 'LCD_vWriteString':
+../LCD_Pro.c:93: warning: implicit declaration of function 'strlen'
+../LCD_Pro.c:93: warning: incompatible implicit declaration of built-in function 'strlen'
+../LCD_Pro.c:93: warning: pointer targets in passing argument 1 of 'strlen' differ in signedness
+Finished building: ../LCD_Pro.c
+ 
+Building target: ICU2.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,ICU2.map -mmcu=atmega16 -o "ICU2.elf"  ./DIO_Pro.o ./KEYPad.o ./LCD_Pro.o ./main_ICU.o   
+./LCD_Pro.o: In function `LCD_vWriteCommand':
+../LCD_Pro.c:20: undefined reference to `DIO_vSetPortDirec'
+make: *** [ICU2.elf] Error 1
+
+20:39:04 Build Finished (took 500ms)
+

@@ -1,0 +1,46 @@
+/*
+ * main.c
+ *
+ *  Created on: ??þ/??þ/????
+ *      Author: Yara
+ */
+//#define F_CPU 8000000UL
+#include "DIO_interface.h"
+#include "LCD_interface.h"
+#include "../_standard/calcbit.h"
+#include <avr/delay.h>
+#include "slave.h"
+
+void main(void)
+{
+	unsigned char res='n';
+
+	DIO_vSetPinDirec(DIO_PORTB,0,DIO_OUTPUT);
+	DIO_vSetPinDirec(DIO_PORTB,1,DIO_OUTPUT);
+	DIO_vSetPinDirec(DIO_PORTB,2,DIO_OUTPUT);
+
+	DIO_vSetPinDirec(DIO_PORTD,0,DIO_OUTPUT);
+	DIO_vSetPinDirec(DIO_PORTD,1,DIO_OUTPUT);
+	DIO_vSetPinDirec(DIO_PORTD,2,DIO_OUTPUT);
+	DIO_vSetPinDirec(DIO_PORTD,3,DIO_OUTPUT);
+	DIO_vSetPinDirec(DIO_PORTD,4,DIO_OUTPUT);
+	DIO_vSetPinDirec(DIO_PORTD,5,DIO_OUTPUT);
+	DIO_vSetPinDirec(DIO_PORTD,6,DIO_OUTPUT);
+
+	LCD_vInitialize();
+	LCD_vWriteChar(res);
+	i2c_initSlave(0x10);
+	i2c_listen();
+	res = i2c_receive(1);
+	LCD_vWriteChar(res);
+	res = i2c_receive(1);
+	LCD_vWriteChar(res);
+	res = i2c_receive(1);
+	LCD_vWriteChar(res);
+	while(1)
+	{
+
+	}
+
+}
+

@@ -1,0 +1,72 @@
+12:13:11 **** Incremental Build of configuration Debug for project Timer0 ****
+make all 
+Building file: ../timer.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"timer.d" -MT"timer.o" -c -o "timer.o" "../timer.c"
+../timer.c:16: warning: return type of 'main' is not 'int'
+Finished building: ../timer.c
+ 
+Building target: Timer0.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Timer0.map -mmcu=atmega32 -o "Timer0.elf"  ./DIO_Pro.o ./timer.o   
+Finished building target: Timer0.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S Timer0.elf  >"Timer0.lss"
+Finished building: Timer0.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex Timer0.elf  "Timer0.hex"
+Finished building: Timer0.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 Timer0.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    3008 bytes (9.2% Full)
+(.text + .data + .bootloader)
+
+Data:          1 bytes (0.0% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+Invoking: AVRDude
+C:\WinAVR-20100110\bin\avrdude -pm32 -cusbasp -Uflash:w:Timer0.hex:a
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.00s
+
+avrdude: Device signature = 0x1e9502
+avrdude: NOTE: FLASH memory has been specified, an erase cycle will be performed
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file "Timer0.hex"
+avrdude: input file Timer0.hex auto detected as Intel Hex
+avrdude: writing flash (3008 bytes):
+
+Writing | ################################################## | 100% 1.28s
+
+avrdude: 3008 bytes of flash written
+avrdude: verifying flash memory against Timer0.hex:
+avrdude: load data flash data from input file Timer0.hex:
+avrdude: input file Timer0.hex auto detected as Intel Hex
+avrdude: input file Timer0.hex contains 3008 bytes
+avrdude: reading on-chip flash data:
+
+Reading | ################################################## | 100% 0.77s
+
+avrdude: verifying ...
+avrdude: 3008 bytes of flash verified
+
+avrdude done.  Thank you.
+
+Finished building: avrdudedummy
+ 
+
+12:13:14 Build Finished (took 2s.821ms)
+

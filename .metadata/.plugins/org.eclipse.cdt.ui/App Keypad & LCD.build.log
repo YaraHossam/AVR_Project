@@ -1,0 +1,11 @@
+21:17:19 **** Incremental Build of configuration Debug for project App Keypad & LCD ****
+make all 
+Building target: App Keypad & LCD.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,App Keypad & LCD.map -mmcu=atmega16 -o "App Keypad & LCD.elf"  ./main\ of\ App.o   
+avr-gcc.exe: Keypad: No such file or directory
+/usr/bin/sh: LCD.map: command not found
+make: *** [App Keypad & LCD.elf] Error 127
+
+21:17:19 Build Finished (took 141ms)
+

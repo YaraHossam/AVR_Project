@@ -1,0 +1,17 @@
+19:55:14 **** Build of configuration Debug for project Book_Test ****
+make all 
+Building file: ../DIO_Pro.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"DIO_Pro.d" -MT"DIO_Pro.o" -c -o "DIO_Pro.o" "../DIO_Pro.c"
+Finished building: ../DIO_Pro.c
+ 
+Building file: ../KEYPad.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"KEYPad.d" -MT"KEYPad.o" -c -o "KEYPad.o" "../KEYPad.c"
+../KEYPad.c:14:26: error: LCD16x2_4bit.h: No such file or directory
+In file included from ../KEYPad.c:16:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+make: *** [KEYPad.o] Error 1
+
+19:55:15 Build Finished (took 522ms)
+

@@ -1,0 +1,44 @@
+22:43:20 **** Incremental Build of configuration Debug for project I2C_Slave ****
+make all 
+Building file: ../slave_main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"slave_main.d" -MT"slave_main.o" -c -o "slave_main.o" "../slave_main.c"
+In file included from ../slave_main.c:11:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../slave_main.c:11:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../slave_main.c:14: warning: return type of 'main' is not 'int'
+Finished building: ../slave_main.c
+ 
+Building target: I2C_Slave.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,I2C_Slave.map -mmcu=atmega16 -o "I2C_Slave.elf"  ./DIO_Pro.o ./LCD_Pro.o ./slave.o ./slave_main.o   
+Finished building target: I2C_Slave.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S I2C_Slave.elf  >"I2C_Slave.lss"
+Finished building: I2C_Slave.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex I2C_Slave.elf  "I2C_Slave.hex"
+Finished building: I2C_Slave.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 I2C_Slave.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:    8878 bytes (54.2% Full)
+(.text + .data + .bootloader)
+
+Data:          8 bytes (0.8% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+22:43:21 Build Finished (took 813ms)
+

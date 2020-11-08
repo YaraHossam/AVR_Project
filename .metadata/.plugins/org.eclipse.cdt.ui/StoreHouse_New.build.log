@@ -1,0 +1,20 @@
+23:44:15 **** Incremental Build of configuration Debug for project StoreHouse_New ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 StoreHouse_New.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:   14478 bytes (88.4% Full)
+(.text + .data + .bootloader)
+
+Data:         63 bytes (6.2% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+23:44:15 Build Finished (took 436ms)
+

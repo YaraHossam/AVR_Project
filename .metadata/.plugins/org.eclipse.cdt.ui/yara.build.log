@@ -1,0 +1,15 @@
+01:27:32 **** Build of configuration Debug for project yara ****
+make all 
+Building file: ../m.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"m.d" -MT"m.o" -c -o "m.o" "../m.c"
+Finished building: ../m.c
+ 
+Building target: yara.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,yara.map -mmcu=atmega16 -o "yara.elf"  ./m.o   
+c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm16.o:(.init9+0x0): undefined reference to `main'
+make: *** [yara.elf] Error 1
+
+01:27:32 Build Finished (took 351ms)
+

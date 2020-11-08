@@ -1,0 +1,11 @@
+08:50:46 **** Incremental Build of configuration Debug for project storehouse ****
+make all 
+Building target: storehouse.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,storehouse.map -mmcu=atmega16 -o "storehouse.elf"  ./DIO_Pro.o ./Keypad_Pro.o ./LCD_Pro.o ./fun_pro.o ./main_storehouse.o ./seven_segment_Pro.o   
+./LCD_Pro.o: In function `LCD_vWriteCommand':
+../LCD_Pro.c:20: undefined reference to `DIO_vSetPortDirec'
+make: *** [storehouse.elf] Error 1
+
+08:50:47 Build Finished (took 197ms)
+

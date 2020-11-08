@@ -1,0 +1,87 @@
+20:57:50 **** Incremental Build of configuration Debug for project Test_RTOS ****
+make all 
+Building file: ../ArduinoUnoFreertos.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"ArduinoUnoFreertos.d" -MT"ArduinoUnoFreertos.o" -c -o "ArduinoUnoFreertos.o" "../ArduinoUnoFreertos.c"
+In file included from ../FreeRTOS.h:106,
+                 from ../ArduinoUnoFreertos.c:8:
+../portable.h:94:58: error: ../Source/portable/GCC/ATMega328p/portmacro.h: No such file or directory
+../portable.h:114:3: error: #error "Invalid portBYTE_ALIGNMENT definition"
+In file included from ../FreeRTOS.h:106,
+                 from ../ArduinoUnoFreertos.c:8:
+../portable.h:136: error: expected '=', ',', ';', 'asm' or '__attribute__' before '*' token
+../portable.h:173: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'xPortStartScheduler'
+In file included from ../task.h:78,
+                 from ../ArduinoUnoFreertos.c:9:
+../list.h:184: error: expected specifier-qualifier-list before 'TickType_t'
+../list.h:196: error: expected specifier-qualifier-list before 'TickType_t'
+../list.h:208: error: expected specifier-qualifier-list before 'UBaseType_t'
+../list.h:446: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uxListRemove'
+In file included from ../ArduinoUnoFreertos.c:9:
+../task.h:109: error: expected declaration specifiers or '...' before '*' token
+../task.h:109: warning: type defaults to 'int' in declaration of 'BaseType_t'
+../task.h:109: error: 'BaseType_t' declared as function returning a function
+../task.h:136: error: field 'xOverflowCount' declared as a function
+../task.h:137: error: expected specifier-qualifier-list before 'TickType_t'
+../task.h:159: error: expected specifier-qualifier-list before 'UBaseType_t'
+../task.h:170: error: expected specifier-qualifier-list before 'UBaseType_t'
+../task.h:555: warning: type defaults to 'int' in declaration of 'TickType_t'
+../task.h:555: error: expected ';', ',' or ')' before 'xTicksToDelay'
+../task.h:614: error: expected ')' before '*' token
+../task.h:661: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uxTaskPriorityGet'
+../task.h:669: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uxTaskPriorityGetFromISR'
+../task.h:729: error: expected declaration specifiers or '...' before 'UBaseType_t'
+../task.h:858: error: 'xTaskResumeFromISR' declared as function returning a function
+../task.h:1052: error: 'xTaskResumeAll' declared as function returning a function
+../task.h:1067: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'xTaskGetTickCount'
+../task.h:1083: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'xTaskGetTickCountFromISR'
+../task.h:1097: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uxTaskGetNumberOfTasks'
+../task.h:1132: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uxTaskGetStackHighWaterMark'
+../task.h:1185: error: 'xTaskCallApplicationTaskHook' declared as function returning a function
+../task.h:1293: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uxTaskGetSystemState'
+../task.h:1475: error: 'xTaskGenericNotify' declared as function returning a function
+../task.h:1566: error: 'xTaskNotifyFromISR' declared as function returning a function
+../task.h:1641: error: expected declaration specifiers or '...' before 'TickType_t'
+../task.h:1641: error: 'xTaskNotifyWait' declared as function returning a function
+../task.h:1811: error: expected declaration specifiers or '...' before 'TickType_t'
+../task.h:1832: error: 'xTaskIncrementTick' declared as function returning a function
+../task.h:1865: warning: type defaults to 'int' in declaration of 'TickType_t'
+../task.h:1865: error: expected ';', ',' or ')' before 'xTicksToWait'
+../task.h:1866: warning: type defaults to 'int' in declaration of 'TickType_t'
+../task.h:1866: error: expected ';', ',' or ')' before 'xItemValue'
+../task.h:1879: warning: type defaults to 'int' in declaration of 'TickType_t'
+../task.h:1879: error: expected ';', ',' or ')' before 'xTicksToWait'
+../task.h:1905: error: 'xTaskRemoveFromEventList' declared as function returning a function
+../task.h:1906: warning: type defaults to 'int' in declaration of 'TickType_t'
+../task.h:1906: error: expected ';', ',' or ')' before 'xItemValue'
+../task.h:1922: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uxTaskResetEventItemValue'
+../task.h:1938: error: expected declaration specifiers or '...' before 'TickType_t'
+../task.h:1938: error: 'xTaskCheckForTimeOut' declared as function returning a function
+../task.h:1950: error: 'xTaskGetSchedulerState' declared as function returning a function
+../task.h:1962: error: 'xTaskPriorityDisinherit' declared as function returning a function
+../task.h:1968: error: expected declaration specifiers or '...' before 'UBaseType_t'
+../task.h:1968: error: expected declaration specifiers or '...' before 'StackType_t'
+../task.h:1968: error: 'xTaskGenericCreate' declared as function returning a function
+../task.h:1973: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'uxTaskGetTaskNumber'
+../task.h:1979: warning: type defaults to 'int' in declaration of 'UBaseType_t'
+../task.h:1979: error: expected ';', ',' or ')' before 'uxHandle'
+../task.h:1989: warning: type defaults to 'int' in declaration of 'TickType_t'
+../task.h:1989: error: expected ';', ',' or ')' before 'xTicksToJump'
+In file included from ../ArduinoUnoFreertos.c:12:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../ArduinoUnoFreertos.c: In function 'Blink_200ms_task':
+../ArduinoUnoFreertos.c:26: warning: implicit declaration of function 'vTaskDelay'
+../ArduinoUnoFreertos.c: In function 'Blink_1000ms_task':
+../ArduinoUnoFreertos.c:33: error: 'TickType_t' undeclared (first use in this function)
+../ArduinoUnoFreertos.c:33: error: (Each undeclared identifier is reported only once
+../ArduinoUnoFreertos.c:33: error: for each function it appears in.)
+../ArduinoUnoFreertos.c:33: error: expected ';' before 'xLastWakeTime'
+../ArduinoUnoFreertos.c: In function 'main':
+../ArduinoUnoFreertos.c:45: warning: passing argument 5 of 'xTaskGenericCreate' makes pointer from integer without a cast
+../ArduinoUnoFreertos.c:45: error: too many arguments to function 'xTaskGenericCreate'
+../ArduinoUnoFreertos.c:46: warning: passing argument 5 of 'xTaskGenericCreate' makes pointer from integer without a cast
+../ArduinoUnoFreertos.c:46: error: too many arguments to function 'xTaskGenericCreate'
+make: *** [ArduinoUnoFreertos.o] Error 1
+
+20:57:51 Build Finished (took 391ms)
+

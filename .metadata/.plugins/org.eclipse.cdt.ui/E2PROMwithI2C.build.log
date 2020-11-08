@@ -1,0 +1,44 @@
+16:38:15 **** Incremental Build of configuration Debug for project E2PROMwithI2C ****
+make all 
+Building file: ../main_APP.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"main_APP.d" -MT"main_APP.o" -c -o "main_APP.o" "../main_APP.c"
+In file included from ../main_APP.c:12:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../main_APP.c:12:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../main_APP.c:14: warning: return type of 'main' is not 'int'
+Finished building: ../main_APP.c
+ 
+Building target: E2PROMwithI2C.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,E2PROMwithI2C.map -mmcu=atmega16 -o "E2PROMwithI2C.elf"  ./DIO_Pro.o ./I2C_Pro.o ./LCD_Pro.o ./main_APP.o   
+Finished building target: E2PROMwithI2C.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S E2PROMwithI2C.elf  >"E2PROMwithI2C.lss"
+Finished building: E2PROMwithI2C.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex E2PROMwithI2C.elf  "E2PROMwithI2C.hex"
+Finished building: E2PROMwithI2C.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 E2PROMwithI2C.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:    9336 bytes (57.0% Full)
+(.text + .data + .bootloader)
+
+Data:          8 bytes (0.8% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+16:38:16 Build Finished (took 775ms)
+

@@ -1,0 +1,42 @@
+11:47:50 **** Incremental Build of configuration Debug for project App_Keypad_with_LCD ****
+make all 
+Building file: ../Keypad_Pro.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=8000000UL -MMD -MP -MF"Keypad_Pro.d" -MT"Keypad_Pro.o" -c -o "Keypad_Pro.o" "../Keypad_Pro.c"
+Finished building: ../Keypad_Pro.c
+ 
+Building target: App_Keypad_with_LCD.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,App_Keypad_with_LCD.map -mmcu=atmega32 -o "App_Keypad_with_LCD.elf"  ./DIO_Pro.o ./Keypad_Pro.o ./LCD_Pro.o ./main_of_app.o   
+Finished building target: App_Keypad_with_LCD.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S App_Keypad_with_LCD.elf  >"App_Keypad_with_LCD.lss"
+Finished building: App_Keypad_with_LCD.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex App_Keypad_with_LCD.elf  "App_Keypad_with_LCD.hex"
+Finished building: App_Keypad_with_LCD.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 App_Keypad_with_LCD.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    7640 bytes (23.3% Full)
+(.text + .data + .bootloader)
+
+Data:         24 bytes (1.2% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+Invoking: AVRDude
+C:\WinAVR-20100110\bin\avrdude -pm32 -cusbasp -Uflash:w:App_Keypad_with_LCD.hex:a
+avrdude: error: could not find USB device "USBasp" with vid=0x16c0 pid=0x5dc
+make: *** [avrdudedummy] Error 1
+
+11:47:51 Build Finished (took 1s.44ms)
+

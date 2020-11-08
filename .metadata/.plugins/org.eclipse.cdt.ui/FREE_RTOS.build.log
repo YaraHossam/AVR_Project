@@ -1,0 +1,40 @@
+20:55:29 **** Incremental Build of configuration Debug for project FREE_RTOS ****
+make all 
+Building file: ../RTOS_test_EX1.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"RTOS_test_EX1.d" -MT"RTOS_test_EX1.o" -c -o "RTOS_test_EX1.o" "../RTOS_test_EX1.c"
+../RTOS_test_EX1.c: In function 'Blink_1000ms_task':
+../RTOS_test_EX1.c:29: warning: unused variable 'gg'
+Finished building: ../RTOS_test_EX1.c
+ 
+Building target: FREE_RTOS.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,FREE_RTOS.map -mmcu=atmega16 -o "FREE_RTOS.elf"  ./RTOS_test_EX1.o ./croutine.o ./heap_1.o ./list.o ./port.o ./queue.o ./tasks.o ./timers.o   
+Finished building target: FREE_RTOS.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S FREE_RTOS.elf  >"FREE_RTOS.lss"
+Finished building: FREE_RTOS.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex FREE_RTOS.elf  "FREE_RTOS.hex"
+Finished building: FREE_RTOS.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 FREE_RTOS.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:   10042 bytes (61.3% Full)
+(.text + .data + .bootloader)
+
+Data:        749 bytes (73.1% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+20:55:30 Build Finished (took 1s.11ms)
+

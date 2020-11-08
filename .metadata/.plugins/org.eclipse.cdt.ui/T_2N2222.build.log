@@ -1,0 +1,49 @@
+21:21:38 **** Build of configuration Debug for project T_2N2222 ****
+make all 
+Building file: ../DIO_Pro.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"DIO_Pro.d" -MT"DIO_Pro.o" -c -o "DIO_Pro.o" "../DIO_Pro.c"
+Finished building: ../DIO_Pro.c
+ 
+Building file: ../main.c
+Invoking: AVR Compiler
+avr-gcc -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega16 -DF_CPU=1000000UL -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+In file included from ../main.c:8:
+c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:36:2: warning: #warning "This file has been moved to <util/delay.h>."
+In file included from c:/winavr-20100110/lib/gcc/../../avr/include/avr/delay.h:37,
+                 from ../main.c:8:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../main.c:10: warning: return type of 'main' is not 'int'
+Finished building: ../main.c
+ 
+Building target: T_2N2222.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,T_2N2222.map -mmcu=atmega16 -o "T_2N2222.elf"  ./DIO_Pro.o ./main.o   
+Finished building target: T_2N2222.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S T_2N2222.elf  >"T_2N2222.lss"
+Finished building: T_2N2222.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex T_2N2222.elf  "T_2N2222.hex"
+Finished building: T_2N2222.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 T_2N2222.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:    7272 bytes (44.4% Full)
+(.text + .data + .bootloader)
+
+Data:          8 bytes (0.8% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+21:21:42 Build Finished (took 3s.648ms)
+

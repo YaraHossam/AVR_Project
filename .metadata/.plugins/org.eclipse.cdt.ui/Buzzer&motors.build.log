@@ -1,0 +1,11 @@
+14:00:22 **** Incremental Build of configuration Debug for project Buzzer&motors ****
+make all 
+Building target: Buzzer&motors.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Buzzer&motors.map -mmcu=atmega32 -o "Buzzer&motors.elf"  ./DIO_Pro.o ./main_file.o   
+/usr/bin/sh: motors.map: command not found
+make: *** [Buzzer&motors.elf] Error 127
+c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/crts8515.o:(.init9+0x0): undefined reference to `main'
+
+14:00:23 Build Finished (took 157ms)
+

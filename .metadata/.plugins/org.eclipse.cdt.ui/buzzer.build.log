@@ -1,0 +1,53 @@
+11:16:50 **** Incremental Build of configuration Debug for project buzzer ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 buzzer.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    7384 bytes (22.5% Full)
+(.text + .data + .bootloader)
+
+Data:         24 bytes (1.2% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+Invoking: AVRDude
+C:\WinAVR-20100110\bin\avrdude -pm32 -cusbasp -Uflash:w:buzzer.hex:a
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.00s
+
+avrdude: Device signature = 0x1e9502
+avrdude: NOTE: FLASH memory has been specified, an erase cycle will be performed
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file "buzzer.hex"
+avrdude: input file buzzer.hex auto detected as Intel Hex
+avrdude: writing flash (7384 bytes):
+
+Writing | ################################################## | 100% 3.03s
+
+avrdude: 7384 bytes of flash written
+avrdude: verifying flash memory against buzzer.hex:
+avrdude: load data flash data from input file buzzer.hex:
+avrdude: input file buzzer.hex auto detected as Intel Hex
+avrdude: input file buzzer.hex contains 7384 bytes
+avrdude: reading on-chip flash data:
+
+Reading | ################################################## | 100% 1.88s
+
+avrdude: verifying ...
+avrdude: 7384 bytes of flash verified
+
+avrdude done.  Thank you.
+
+Finished building: avrdudedummy
+ 
+
+11:16:55 Build Finished (took 5s.407ms)
+

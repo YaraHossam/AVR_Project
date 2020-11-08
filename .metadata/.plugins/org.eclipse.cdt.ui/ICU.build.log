@@ -1,0 +1,20 @@
+13:54:43 **** Incremental Build of configuration Debug for project ICU ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega16 ICU.elf
+AVR Memory Usage
+----------------
+Device: atmega16
+
+Program:    9010 bytes (55.0% Full)
+(.text + .data + .bootloader)
+
+Data:        273 bytes (26.7% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+13:54:44 Build Finished (took 156ms)
+

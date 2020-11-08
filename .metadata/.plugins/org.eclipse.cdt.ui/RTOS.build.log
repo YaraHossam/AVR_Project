@@ -1,0 +1,37 @@
+10:51:02 **** Build of configuration Debug for project RTOS ****
+make all 
+Building target: RTOS.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,RTOS.map -mmcu=atmega32 -o "RTOS.elf"  ./DIO_Pro.o ./RTOS_Pro.o ./Timer0_Pro.o ./main_RTOS.o   
+Finished building target: RTOS.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S RTOS.elf  >"RTOS.lss"
+Finished building: RTOS.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex RTOS.elf  "RTOS.hex"
+Finished building: RTOS.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 RTOS.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    4578 bytes (14.0% Full)
+(.text + .data + .bootloader)
+
+Data:         15 bytes (0.7% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+Invoking: AVRDude
+C:\WinAVR-20100110\bin\avrdude -pm32 -cusbasp -Uflash:w:RTOS.hex:a
+avrdude: error: could not find USB device "USBasp" with vid=0x16c0 pid=0x5dc
+make: *** [avrdudedummy] Error 1
+
+10:51:03 Build Finished (took 948ms)
+

@@ -1,0 +1,53 @@
+13:48:48 **** Incremental Build of configuration Debug for project motor ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 motor.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    8470 bytes (25.8% Full)
+(.text + .data + .bootloader)
+
+Data:          8 bytes (0.4% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+Invoking: AVRDude
+C:\WinAVR-20100110\bin\avrdude -pm32 -cusbasp -Uflash:w:motor.hex:a
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.00s
+
+avrdude: Device signature = 0x1e9502
+avrdude: NOTE: FLASH memory has been specified, an erase cycle will be performed
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file "motor.hex"
+avrdude: input file motor.hex auto detected as Intel Hex
+avrdude: writing flash (8470 bytes):
+
+Writing | ################################################## | 100% 3.49s
+
+avrdude: 8470 bytes of flash written
+avrdude: verifying flash memory against motor.hex:
+avrdude: load data flash data from input file motor.hex:
+avrdude: input file motor.hex auto detected as Intel Hex
+avrdude: input file motor.hex contains 8470 bytes
+avrdude: reading on-chip flash data:
+
+Reading | ################################################## | 100% 2.17s
+
+avrdude: verifying ...
+avrdude: 8470 bytes of flash verified
+
+avrdude done.  Thank you.
+
+Finished building: avrdudedummy
+ 
+
+13:48:54 Build Finished (took 6s.146ms)
+
